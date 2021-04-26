@@ -4,6 +4,8 @@ import { ActionsFactory } from './actionFactory';
 /**
  * Простой хук, возвращающий экшены без необходимости передавать useDispatch из компонента.
  *
- * @param {keyof ActionsFactory} type - Наименование геттера.
+ * @param {Function} selector - Селектор возвращаемого объекта.
  * */
-export const useActions = (type: keyof ActionsFactory) => new ActionsFactory(useDispatch())[type];
+export const useActions = <T extends ActionsFactory>(selector: (actions: ActionsFactory) => T[keyof T]) => {
+    return selector(new ActionsFactory(useDispatch()));
+};

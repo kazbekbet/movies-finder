@@ -18,5 +18,5 @@ export const textColorsConfig = {
 };
 
 export const effectsColorConfig = {
-    RIPPLE: 'rgba(0, 0, 0, .16)'
-}
+    RIPPLE: 'rgba(0, 0, 0, .16)',
+};

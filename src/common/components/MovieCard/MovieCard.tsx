@@ -16,13 +16,14 @@ interface IOwnProps {
     title: string;
     description: string;
     posterPath: string;
+    onPress: () => void;
 }
 
 /** Компонент карточки фильма в списке. */
-export const MovieCard: React.FC<IOwnProps> = ({ title, description, posterPath }) => {
+export const MovieCard: React.FC<IOwnProps> = ({ title, description, posterPath, onPress }) => {
     const isShown = (title && description) || (posterPath && title);
 
-    const handlePress = () => console.log('Card is pressed');
+    const handlePress = () => onPress();
 
     const setDescription = () => {
         if (description) {

@@ -7,15 +7,19 @@ import { MovieCard } from '../../../../common/components/MovieCard/MovieCard';
 interface IOwnProps {
     movies: IMovieListResponse | null;
     status: PromiseStatuses;
+    onPress: (id: number) => void;
 }
 
-export const MovieListContent: React.FC<IOwnProps> = ({ movies, status }) => {
+export const MovieListContent: React.FC<IOwnProps> = ({ movies, status, onPress }) => {
+    const handlePress = (id: number) => onPress(id);
+
     return (
         <>
             {movies?.results &&
                 !isPending(status) &&
                 movies.results.map(movie => (
                     <MovieCard
+                        onPress={handlePress.bind(null, movie.id)}
                         key={movie.id}
                         title={movie.title}
                         description={movie.overview}

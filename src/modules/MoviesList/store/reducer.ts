@@ -1,6 +1,7 @@
 import { PromiseStatuses } from '../../../common/enums/asyncActionStatuses';
 import { IMovieListModule, IMovieListResponse } from './models';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { SortTypes } from '../../../common/enums/sortTypes';
 
 /** Начальное состояние. */
 const initialState: IMovieListModule = {
@@ -15,8 +16,9 @@ export const moviesListSlice = createSlice({
     name: 'MoviesList',
     initialState,
     reducers: {
-        getListDataPending: state => {
+        getListDataPending: (state, action: PayloadAction<SortTypes>) => {
             state.status = PromiseStatuses.PENDING;
+            state.sortBy = action.payload;
             state.movies = null;
         },
         getListDataFulfilled: (state, action: PayloadAction<IMovieListResponse>) => {

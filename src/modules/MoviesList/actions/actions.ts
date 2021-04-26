@@ -10,7 +10,7 @@ export class MovieListActions {
     /** Получение списка фильмов. */
     public getMoviesList = async (sort: SortTypes, page: number) => {
         try {
-            this.dispatch(getListDataPending());
+            this.dispatch(getListDataPending(sort));
             const response = await this.services.getMovieList({ sort, page });
             this.dispatch(getListDataFulfilled(response.data));
         } catch (e) {
