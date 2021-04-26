@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { SortTypes } from '../../../common/enums/sortTypes';
 import { isPending } from '../../../common/statusCheckers/asyncStatusCheckers';
@@ -10,6 +10,8 @@ import { useAppSelector } from '../../../store/hooks';
 import { useActions } from '../../../common/actionFactory/useActions';
 import { NavigationModel } from '../../../router/types';
 import { RouterPaths } from '../../../router/routerPaths';
+import { MovieListAppBarHeader } from "./components/MovieListAppBarHeader";
+import { MovieListAppBarActions } from "./components/MovieListAppBarActions";
 
 /** Модель свойств компонента. */
 interface IOwnProps extends NavigationModel<RouterPaths.MOVIES_LIST> {}
@@ -19,9 +21,18 @@ const MoviesList: React.FC<IOwnProps> = ({ route, navigation }) => {
     const { movies, status, page } = useAppSelector(state => state.moviesList);
     const actions = useActions(actions => actions.moviesList);
 
+    /** Специальные опции для AppBar. */
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerTitle: () => <MovieListAppBarHeader />,
+            headerRight: () => <MovieListAppBarActions />
+        });
+    }, [navigation]);
+
     useEffect(() => {
         getMovieList();
     }, [page]);
+
 
     /** Получение списка фильмов. */
     const getMovieList = async (sort: SortTypes = SortTypes.POPULARITY) => await actions.getMoviesList(sort, page);
@@ -31,16 +42,11 @@ const MoviesList: React.FC<IOwnProps> = ({ route, navigation }) => {
         actions.changePage({ type: changeType, currentPage: page });
     };
 
-    /** Переход к детальной информации о фильме. */
-    const handleSelectMovie = (id: number) => {
-        navigation.navigate(RouterPaths.MOVIE_INFO, { id });
-    };
-
     return (
         <>
             <ScrollView style={styles.container}>
                 {isPending(status) && <Spinner />}
-                <MovieListContent movies={movies} status={status} onPress={handleSelectMovie} />
+                <MovieListContent movies={movies} status={status} />
                 {!isPending(status) && movies && (
                     <MovieListPagination
                         currentPage={page}

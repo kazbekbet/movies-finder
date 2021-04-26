@@ -3,15 +3,23 @@ import { IMovieListResponse } from '../../store/models';
 import { PromiseStatuses } from '../../../../common/enums/asyncActionStatuses';
 import { isPending } from '../../../../common/statusCheckers/asyncStatusCheckers';
 import { MovieCard } from '../../../../common/components/MovieCard/MovieCard';
+import { useNavigation } from '@react-navigation/native';
+import { RouterPaths } from '../../../../router/routerPaths';
 
 interface IOwnProps {
     movies: IMovieListResponse | null;
     status: PromiseStatuses;
-    onPress: (id: number) => void;
 }
 
-export const MovieListContent: React.FC<IOwnProps> = ({ movies, status, onPress }) => {
-    const handlePress = (id: number) => onPress(id);
+export const MovieListContent: React.FC<IOwnProps> = ({ movies, status }) => {
+    const navigation = useNavigation();
+    /** Переход к детальной информации о фильме. */
+    const handlePress = ({ id, title }: { id: number; title: string }) => {
+        navigation.navigate(RouterPaths.MOVIE_INFO, {
+            id,
+            title,
+        });
+    };
 
     return (
         <>
@@ -19,7 +27,7 @@ export const MovieListContent: React.FC<IOwnProps> = ({ movies, status, onPress 
                 !isPending(status) &&
                 movies.results.map(movie => (
                     <MovieCard
-                        onPress={handlePress.bind(null, movie.id)}
+                        onPress={handlePress.bind(null, { id: movie.id, title: movie.title })}
                         key={movie.id}
                         title={movie.title}
                         description={movie.overview}

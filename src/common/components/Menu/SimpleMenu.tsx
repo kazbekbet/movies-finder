@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { View } from 'react-native';
-import { Button, Divider, Menu, Provider } from 'react-native-paper';
+import { IconButton, Menu } from 'react-native-paper';
+import { SortTypes, SortTypesLocalization } from '../../enums/sortTypes';
 
 interface IOwnProps {
-  anchor?: React.ReactNode;
+    children: React.ReactNode;
 }
 
-export const SimpleMenu: React.FC<IOwnProps> = ({anchor}) => {
+export const SimpleMenu: React.FC<IOwnProps> = ({ children }) => {
     const [visible, setVisible] = React.useState(false);
 
     const openMenu = () => setVisible(true);
@@ -14,21 +14,12 @@ export const SimpleMenu: React.FC<IOwnProps> = ({anchor}) => {
     const closeMenu = () => setVisible(false);
 
     return (
-        <Provider>
-            <View
-                style={{
-                    paddingTop: 50,
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                }}
-            >
-                <Menu visible={visible} onDismiss={closeMenu} anchor={<Button onPress={openMenu}>Show menu</Button>}>
-                    <Menu.Item onPress={() => {}} title='Item 1' />
-                    <Menu.Item onPress={() => {}} title='Item 2' />
-                    <Divider />
-                    <Menu.Item onPress={() => {}} title='Item 3' />
-                </Menu>
-            </View>
-        </Provider>
+        <Menu
+            visible={visible}
+            onDismiss={closeMenu}
+            anchor={<IconButton icon='dots-vertical' size={24} onPress={openMenu} />}
+        >
+            {children}
+        </Menu>
     );
 };

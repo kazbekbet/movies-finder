@@ -1,8 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-export const MovieInfoAppBarHeader: React.FC = () => {
-    return <Text style={styles.header}>Название фильма</Text>;
+interface IOwnProps {
+    title: string;
+}
+
+export const MovieInfoAppBarHeader: React.FC<IOwnProps> = ({ title }) => {
+    const getTitle = () => {
+        if (!title) return 'Без названия';
+        if (title && title.length >= 18) return `${title.slice(0, 18)}...`;
+        return title;
+    };
+
+    return <Text style={styles.header}>{getTitle()}</Text>;
 };
 
 const styles = StyleSheet.create({

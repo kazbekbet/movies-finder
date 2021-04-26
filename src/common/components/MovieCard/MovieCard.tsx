@@ -23,8 +23,6 @@ interface IOwnProps {
 export const MovieCard: React.FC<IOwnProps> = ({ title, description, posterPath, onPress }) => {
     const isShown = (title && description) || (posterPath && title);
 
-    const handlePress = () => onPress();
-
     const setDescription = () => {
         if (description) {
             if (description.length <= 140) {
@@ -39,8 +37,8 @@ export const MovieCard: React.FC<IOwnProps> = ({ title, description, posterPath,
     const setPoster = () => `${ApiConfig.POSTER_URL}${posterPath}`;
 
     return isShown ? (
-        <Card style={styles.container} onPress={handlePress}>
-            <RippleEffect onPress={handlePress}>
+        <Card style={styles.container} onPress={onPress}>
+            <RippleEffect onPress={onPress}>
                 <View>
                     {posterPath && <Card.Cover source={{ uri: setPoster() }} />}
                     <Card.Content style={styles.content}>

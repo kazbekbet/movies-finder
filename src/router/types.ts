@@ -11,7 +11,8 @@ export interface NavigationModel<T extends RouterPaths> {
     route: RouteProp<RootStackParamList, T>;
 }
 
+/** Типизация параметров роутинга. */
 export type RootStackParamList = {
     [RouterPaths.MOVIES_LIST]: undefined;
-    [RouterPaths.MOVIE_INFO]: { id: number };
+    [RouterPaths.MOVIE_INFO]: { id: number; title: string };
 };
