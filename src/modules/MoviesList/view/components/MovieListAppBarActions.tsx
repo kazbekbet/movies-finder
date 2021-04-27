@@ -3,10 +3,11 @@ import { IconButton, Menu } from 'react-native-paper';
 import { SortTypes, SortTypesLocalization } from '../../../../common/enums/sortTypes';
 import { useActions } from '../../../../common/actionFactory/useActions';
 import { useAppSelector } from '../../../../store/hooks';
+import { MovieListActions } from '../../actions/actions';
 
 /** Компонент экшенов в AppBar списка фильмов. */
 export const MovieListAppBarActions: React.FC = () => {
-    const actions = useActions(actions => actions.moviesList);
+    const actions = useActions(actions => actions.moviesList) as MovieListActions;
     const { sortBy } = useAppSelector(state => state.moviesList);
     const [showMenu, setShowMenu] = React.useState(false);
 
