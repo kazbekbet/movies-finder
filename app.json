@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "movies-finder",
+    "name": "Поиск фильмов",
     "slug": "movies-finder",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -29,6 +29,6 @@
     "web": {
       "favicon": "./assets/icon.png"
     },
-    "description": ""
+    "description": "Приложение на React Native для поиска фильмов."
   }
 }
