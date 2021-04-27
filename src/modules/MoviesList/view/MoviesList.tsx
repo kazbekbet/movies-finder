@@ -12,14 +12,15 @@ import { NavigationModel } from '../../../router/types';
 import { RouterPaths } from '../../../router/routerPaths';
 import { MovieListAppBarHeader } from './components/MovieListAppBarHeader';
 import { MovieListAppBarActions } from './components/MovieListAppBarActions';
+import { MovieListActions } from '../actions/actions';
 
 /** Модель свойств компонента. */
 interface IOwnProps extends NavigationModel<RouterPaths.MOVIES_LIST> {}
 
 /** Компонент списка фильмов. */
-const MoviesList: React.FC<IOwnProps> = ({ route, navigation }) => {
+const MoviesList: React.FC<IOwnProps> = ({ navigation }) => {
     const { movies, status, page, sortBy } = useAppSelector(state => state.moviesList);
-    const actions = useActions(actions => actions.moviesList);
+    const actions = useActions(actions => actions.moviesList) as MovieListActions;
 
     /** Специальные опции для AppBar. */
     useLayoutEffect(() => {
@@ -32,9 +33,7 @@ const MoviesList: React.FC<IOwnProps> = ({ route, navigation }) => {
     useEffect(() => {
         if (sortBy) {
             getMovieList(sortBy);
-        } else {
-            getMovieList();
-        }
+        } else getMovieList();
     }, [page]);
 
     /** Получение списка фильмов. */

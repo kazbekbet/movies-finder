@@ -35,6 +35,9 @@ export const moviesListSlice = createSlice({
         changeSort: (state, action: PayloadAction<SortTypes>) => {
             state.sortBy = action.payload;
         },
+        clearFetchedData: state => {
+            state.movies = null;
+        },
     },
 });
 
@@ -44,4 +47,5 @@ export const {
     getListDataRejected,
     changePage,
     changeSort,
+    clearFetchedData
 } = moviesListSlice.actions;
