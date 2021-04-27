@@ -26,7 +26,7 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => <MovieInfoAppBarHeader title={route.params.title} />,
-            headerRight: () => <MovieInfoAppBarActions />,
+            headerRight: () => <MovieInfoAppBarActions  />,
         });
     }, [navigation]);
 
