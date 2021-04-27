@@ -14,6 +14,7 @@ export const textColorsConfig = {
     READ_CONTENT: {
         HEADLINE: '#000',
         DESCRIPTION: '#707070',
+        PROPERTIES: '#8d8d8d',
     },
 };
 

@@ -10,32 +10,35 @@ import { useAppSelector } from '../../../store/hooks';
 import { useActions } from '../../../common/actionFactory/useActions';
 import { NavigationModel } from '../../../router/types';
 import { RouterPaths } from '../../../router/routerPaths';
-import { MovieListAppBarHeader } from "./components/MovieListAppBarHeader";
-import { MovieListAppBarActions } from "./components/MovieListAppBarActions";
+import { MovieListAppBarHeader } from './components/MovieListAppBarHeader';
+import { MovieListAppBarActions } from './components/MovieListAppBarActions';
 
 /** Модель свойств компонента. */
 interface IOwnProps extends NavigationModel<RouterPaths.MOVIES_LIST> {}
 
 /** Компонент списка фильмов. */
 const MoviesList: React.FC<IOwnProps> = ({ route, navigation }) => {
-    const { movies, status, page } = useAppSelector(state => state.moviesList);
+    const { movies, status, page, sortBy } = useAppSelector(state => state.moviesList);
     const actions = useActions(actions => actions.moviesList);
 
     /** Специальные опции для AppBar. */
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => <MovieListAppBarHeader />,
-            headerRight: () => <MovieListAppBarActions />
+            headerRight: () => <MovieListAppBarActions />,
         });
     }, [navigation]);
 
     useEffect(() => {
-        getMovieList();
+        if (sortBy) {
+            getMovieList(sortBy);
+        } else {
+            getMovieList();
+        }
     }, [page]);
 
-
     /** Получение списка фильмов. */
-    const getMovieList = async (sort: SortTypes = SortTypes.POPULARITY) => await actions.getMoviesList(sort, page);
+    const getMovieList = async (sortBy: SortTypes = SortTypes.POPULARITY) => await actions.getMoviesList(sortBy, page);
 
     /** Изменение страницы списка. */
     const handleChangePage = (changeType: ChangePageTypes) => {

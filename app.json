@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.kazbekbet.moviesfinder"
     },
     "web": {
       "favicon": "./assets/icon.png"

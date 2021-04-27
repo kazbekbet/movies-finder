@@ -17,24 +17,26 @@ interface IOwnProps {
     description: string;
     posterPath: string;
     onPress: () => void;
+    voteAverage: number;
+    releaseDate: string;
 }
 
 /** Компонент карточки фильма в списке. */
-export const MovieCard: React.FC<IOwnProps> = ({ title, description, posterPath, onPress }) => {
+export const MovieCard: React.FC<IOwnProps> = props => {
+    const { title, description, posterPath, onPress, voteAverage, releaseDate } = props;
+
     const isShown = (title && description) || (posterPath && title);
 
     const setDescription = () => {
         if (description) {
-            if (description.length <= 140) {
-                return description;
-            } else {
-                const slicedDescription = description.slice(0, 140);
-                return `${slicedDescription}...`;
-            }
+            if (description.length <= 140) return description;
+            return `${description.slice(0, 120)}...`;
         }
     };
 
     const setPoster = () => `${ApiConfig.POSTER_URL}${posterPath}`;
+    const getVoteAverage = () => (voteAverage ? voteAverage : 'неизвестно');
+    const getReleaseYear = () => (releaseDate && releaseDate.length > 4 ? releaseDate.slice(0, 4) : 'неизвестно');
 
     return isShown ? (
         <Card style={styles.container} onPress={onPress}>
@@ -43,6 +45,10 @@ export const MovieCard: React.FC<IOwnProps> = ({ title, description, posterPath,
                     {posterPath && <Card.Cover source={{ uri: setPoster() }} />}
                     <Card.Content style={styles.content}>
                         {title && <Title style={styles.textTitle}>{title}</Title>}
+                        <View style={styles.properties}>
+                            <Paragraph style={styles.textProperties}>Оценка: {getVoteAverage()} &ndash; </Paragraph>
+                            <Paragraph style={styles.textProperties}>Год: {getReleaseYear()}</Paragraph>
+                        </View>
                         <Paragraph style={styles.textDescription}>{setDescription()}</Paragraph>
                     </Card.Content>
                 </View>
@@ -53,7 +59,7 @@ export const MovieCard: React.FC<IOwnProps> = ({ title, description, posterPath,
     );
 };
 
-const { HEADLINE, DESCRIPTION } = textColorsConfig.READ_CONTENT;
+const { HEADLINE, DESCRIPTION, PROPERTIES } = textColorsConfig.READ_CONTENT;
 
 const styles = StyleSheet.create({
     container: {
@@ -64,10 +70,16 @@ const styles = StyleSheet.create({
     content: {
         marginVertical: 12,
     },
+    properties: {
+        flexDirection: 'row',
+    },
     textTitle: {
         color: HEADLINE,
     },
     textDescription: {
         color: DESCRIPTION,
+    },
+    textProperties: {
+        color: PROPERTIES,
     },
 });

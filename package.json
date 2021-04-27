@@ -5,19 +5,26 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "node_modules/.bin/jest",
+    "test:debug": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand"
+  },
+  "jest": {
+    "preset": "jest-expo"
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.4",
     "@reduxjs/toolkit": "^1.5.1",
+    "@types/jest": "^26.0.23",
     "@types/react-redux": "^7.1.16",
     "@types/react-router-native": "^5.1.0",
     "axios": "^0.21.1",
     "deepmerge": "^4.2.2",
     "expo": "~40.0.0",
     "expo-status-bar": "~1.0.3",
+    "jest-expo": "^35.0.0",
     "link": "^0.1.5",
     "react": "16.13.1",
     "react-dom": "16.13.1",

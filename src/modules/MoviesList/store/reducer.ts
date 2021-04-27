@@ -16,9 +16,10 @@ export const moviesListSlice = createSlice({
     name: 'MoviesList',
     initialState,
     reducers: {
-        getListDataPending: (state, action: PayloadAction<SortTypes>) => {
+        getListDataPending: (state, action: PayloadAction<{ sort: SortTypes; page: number }>) => {
             state.status = PromiseStatuses.PENDING;
-            state.sortBy = action.payload;
+            state.sortBy = action.payload.sort;
+            state.page = action.payload.page;
             state.movies = null;
         },
         getListDataFulfilled: (state, action: PayloadAction<IMovieListResponse>) => {
@@ -31,7 +32,16 @@ export const moviesListSlice = createSlice({
         changePage: (state, action: PayloadAction<number>) => {
             state.page = action.payload;
         },
+        changeSort: (state, action: PayloadAction<SortTypes>) => {
+            state.sortBy = action.payload;
+        },
     },
 });
 
-export const { getListDataPending, getListDataFulfilled, getListDataRejected, changePage } = moviesListSlice.actions;
+export const {
+    getListDataPending,
+    getListDataFulfilled,
+    getListDataRejected,
+    changePage,
+    changeSort,
+} = moviesListSlice.actions;

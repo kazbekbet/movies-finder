@@ -1,14 +1,41 @@
 import React from 'react';
-import { SimpleMenu } from '../../../../common/components/Menu/SimpleMenu';
-import { Menu } from 'react-native-paper';
+import { IconButton, Menu } from 'react-native-paper';
 import { SortTypes, SortTypesLocalization } from '../../../../common/enums/sortTypes';
+import { useActions } from '../../../../common/actionFactory/useActions';
+import { useAppSelector } from '../../../../store/hooks';
 
+/** Компонент экшенов в AppBar списка фильмов. */
 export const MovieListAppBarActions: React.FC = () => {
-  return (
-      <SimpleMenu>
-        <Menu.Item title={SortTypesLocalization[SortTypes.POPULARITY]}/>
-        <Menu.Item title={SortTypesLocalization[SortTypes.REVENUE]}/>
-        <Menu.Item title={SortTypesLocalization[SortTypes.VOTE_COUNT]}/>
-      </SimpleMenu>
-  );
+    const actions = useActions(actions => actions.moviesList);
+    const { sortBy } = useAppSelector(state => state.moviesList);
+    const [showMenu, setShowMenu] = React.useState(false);
+
+    const openMenu = () => setShowMenu(true);
+    const closeMenu = () => setShowMenu(false);
+
+    const handleNavigate = (sort: SortTypes) => {
+        closeMenu();
+        sortBy !== sort && actions.changeSort(sort);
+    };
+
+    return (
+        <Menu
+            visible={showMenu}
+            onDismiss={closeMenu}
+            anchor={<IconButton icon='filter-menu-outline' color={'#fff'} size={24} onPress={openMenu} />}
+        >
+            <Menu.Item
+                onPress={handleNavigate.bind(null, SortTypes.POPULARITY)}
+                title={SortTypesLocalization[SortTypes.POPULARITY]}
+            />
+            <Menu.Item
+                onPress={handleNavigate.bind(null, SortTypes.REVENUE)}
+                title={SortTypesLocalization[SortTypes.REVENUE]}
+            />
+            <Menu.Item
+                onPress={handleNavigate.bind(null, SortTypes.VOTE_COUNT)}
+                title={SortTypesLocalization[SortTypes.VOTE_COUNT]}
+            />
+        </Menu>
+    );
 };

@@ -19,4 +19,7 @@ export interface IMovieShortInfo {
     overview: string;
     backdrop_path: string;
     original_title: string;
+    popularity: number;
+    vote_average: number;
+    release_date: string;
 }

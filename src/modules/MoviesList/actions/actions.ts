@@ -1,7 +1,13 @@
 import { MoviesListServices } from '../services/services';
 import { SortTypes } from '../../../common/enums/sortTypes';
 import { ChangePageTypes } from './types';
-import { changePage, getListDataFulfilled, getListDataPending, getListDataRejected } from '../store/reducer';
+import {
+    changePage,
+    changeSort,
+    getListDataFulfilled,
+    getListDataPending,
+    getListDataRejected,
+} from '../store/reducer';
 import { AppDispatch } from '../../../store/rootReducer';
 
 export class MovieListActions {
@@ -10,7 +16,7 @@ export class MovieListActions {
     /** Получение списка фильмов. */
     public getMoviesList = async (sort: SortTypes, page: number) => {
         try {
-            this.dispatch(getListDataPending(sort));
+            this.dispatch(getListDataPending({sort, page}));
             const response = await this.services.getMovieList({ sort, page });
             this.dispatch(getListDataFulfilled(response.data));
         } catch (e) {
@@ -28,5 +34,11 @@ export class MovieListActions {
                 this.dispatch(changePage((currentPage -= 1)));
                 break;
         }
+    };
+
+    /** Изменение сортировки. */
+    public changeSort = (sort: SortTypes) => {
+        this.dispatch(changeSort(sort));
+        this.getMoviesList(sort, 1);
     };
 }

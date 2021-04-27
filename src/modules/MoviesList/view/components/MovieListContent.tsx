@@ -32,6 +32,8 @@ export const MovieListContent: React.FC<IOwnProps> = ({ movies, status }) => {
                         title={movie.title}
                         description={movie.overview}
                         posterPath={movie.backdrop_path}
+                        voteAverage={movie.vote_average}
+                        releaseDate={movie.release_date}
                     />
                 ))}
         </>
