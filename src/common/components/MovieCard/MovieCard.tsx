@@ -44,6 +44,7 @@ export const MovieCard: React.FC<IOwnProps> = props => {
                 <View>
                     {posterPath && <Card.Cover source={{ uri: setPoster() }} />}
                     <Card.Content style={styles.content}>
+
                         {title && <Title style={styles.textTitle}>{title}</Title>}
                         <View style={styles.properties}>
                             <Paragraph style={styles.textProperties}>Оценка: {getVoteAverage()} &ndash; </Paragraph>

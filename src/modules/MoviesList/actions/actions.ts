@@ -11,6 +11,7 @@ import {
 } from '../store/reducer';
 import { AppDispatch } from '../../../store/rootReducer';
 import { CommonActions } from '../../../common/store/actions';
+import { ErrorsLocalization } from '../../../common/enums/errorsLocalization';
 
 export class MovieListActions {
     constructor(private readonly services: MoviesListServices, private readonly dispatch: AppDispatch) {}
@@ -24,7 +25,7 @@ export class MovieListActions {
             const response = await this.services.getMovieList({ sort, page });
             this.dispatch(getListDataFulfilled(response.data));
         } catch (e) {
-            this.commonActions.setError('Произошла ошибка загрузки данных. Попробуйте зайти позже.');
+            this.commonActions.setError(ErrorsLocalization.FETCH_DATA);
             this.dispatch(getListDataRejected());
         }
     };

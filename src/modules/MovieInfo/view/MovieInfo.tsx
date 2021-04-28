@@ -11,8 +11,7 @@ import { useAppSelector } from '../../../store/hooks';
 import { Card, Chip, Paragraph, Title } from 'react-native-paper';
 import { ApiConfig } from '../../../common/api/config';
 import { textColorsConfig } from '../../../common/theme/themeConfig';
-import { MovieListAppBarActions } from "../../MoviesList/view/components/MovieListAppBarActions";
-import { MovieInfoAppBarActions } from "./components/MovieInfoAppBarActions";
+import { MovieInfoAppBarActions } from './components/MovieInfoAppBarActions';
 
 /** Модель свойств компонента. */
 interface IOwnProps extends NavigationModel<RouterPaths.MOVIE_INFO> {}
@@ -26,7 +25,7 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => <MovieInfoAppBarHeader title={route.params.title} />,
-            headerRight: () => <MovieInfoAppBarActions  />,
+            headerRight: () => <MovieInfoAppBarActions />,
         });
     }, [navigation]);
 
@@ -49,7 +48,7 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
         <>
             <ScrollView style={styles.container}>
                 {isPending(status) && <Spinner />}
-                {!isPending(status) && (
+                {!isPending(status) && result && (
                     <>
                         <Card.Cover source={{ uri: setPoster() }} />
                         <View style={styles.content}>
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
     },
     genresContainer: {
         flexDirection: 'row',
-        paddingVertical: 8
+        paddingVertical: 8,
     },
     chip: {
         marginRight: 8,
