@@ -15,4 +15,5 @@ export interface NavigationModel<T extends RouterPaths> {
 export type RootStackParamList = {
     [RouterPaths.MOVIES_LIST]: undefined;
     [RouterPaths.MOVIE_INFO]: { id: number; title: string };
+    [RouterPaths.FAVORITES_MOVIES]: undefined;
 };

@@ -1,5 +1,6 @@
 import { AppDispatch } from '../../store/rootReducer';
-import { clearError, setError } from './commonReducer';
+import { clearError, setCurrentRoute, setError } from './commonReducer';
+import { RouterPaths } from '../../router/routerPaths';
 
 /** Класс общих экшенов. */
 export class CommonActions {
@@ -11,5 +12,9 @@ export class CommonActions {
 
     public clearError = () => {
         clearError();
+    };
+
+    public setCurrentRoute = (route: RouterPaths) => {
+        this.dispatch(setCurrentRoute(route));
     };
 }

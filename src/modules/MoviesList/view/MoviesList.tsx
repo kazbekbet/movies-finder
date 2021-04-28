@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { SortTypes } from '../../../common/enums/sortTypes';
 import { isPending } from '../../../common/statusCheckers/asyncStatusCheckers';
@@ -10,25 +10,21 @@ import { useAppSelector } from '../../../store/hooks';
 import { useActions } from '../../../common/actionFactory/useActions';
 import { NavigationModel } from '../../../router/types';
 import { RouterPaths } from '../../../router/routerPaths';
-import { MovieListAppBarHeader } from './components/MovieListAppBarHeader';
-import { MovieListAppBarActions } from './components/MovieListAppBarActions';
 import { MovieListActions } from '../actions/actions';
+import { CommonActions } from '../../../common/store/actions';
 
 /** Модель свойств компонента. */
 interface IOwnProps extends NavigationModel<RouterPaths.MOVIES_LIST> {}
 
 /** Компонент списка фильмов. */
-const MoviesList: React.FC<IOwnProps> = ({ navigation }) => {
+const MoviesList: React.FC<IOwnProps> = ({ route }) => {
     const { movies, status, page, sortBy } = useAppSelector(state => state.moviesList);
     const actions = useActions(actions => actions.moviesList) as MovieListActions;
+    const commonActions = useActions(actions => actions.common) as CommonActions;
 
-    /** Специальные опции для AppBar. */
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerTitle: () => <MovieListAppBarHeader />,
-            headerRight: () => <MovieListAppBarActions />,
-        });
-    }, [navigation]);
+    useEffect(() => {
+        commonActions.setCurrentRoute(RouterPaths.MOVIES_LIST);
+    }, [route.name]);
 
     useEffect(() => {
         if (sortBy) {
@@ -64,7 +60,7 @@ const MoviesList: React.FC<IOwnProps> = ({ navigation }) => {
 /** Стили. */
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#f8f8f8',
+        backgroundColor: '#efefef',
         paddingVertical: 12,
     },
 });

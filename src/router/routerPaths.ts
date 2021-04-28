@@ -1,4 +1,6 @@
 export enum RouterPaths {
+    DRAWER = 'DRAWER',
     MOVIES_LIST = 'MOVIES_LIST',
-    MOVIE_INFO = 'MOVIE_INFO'
+    FAVORITES_MOVIES = 'FAVORITES_MOVIES',
+    MOVIE_INFO = 'MOVIE_INFO',
 }
