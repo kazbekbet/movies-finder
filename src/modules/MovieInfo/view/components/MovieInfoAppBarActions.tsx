@@ -4,9 +4,7 @@ import { useAppSelector } from '../../../../store/hooks';
 import { useActions } from '../../../../common/actionFactory/useActions';
 import { MovieInfoActions } from '../../actions/actions';
 import { MovieInfoUtils } from '../../utils/MovieInfoUtils';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LocalStorage } from "../../../../common/enums/localStorage";
-import { ToastAndroid } from "react-native";
+import { ToastAndroid } from 'react-native';
 
 /** Компонент кнопок в AppBar компонента карточки фильма. */
 export const MovieInfoAppBarActions: React.FC = () => {
@@ -37,11 +35,11 @@ export const MovieInfoAppBarActions: React.FC = () => {
             if (!selected) {
                 await actions.setMovieToLocalStorage(result);
                 await setSelected(true);
-                ToastAndroid.show("Фильм успешно добавлен в избранные", ToastAndroid.SHORT);
+                ToastAndroid.show('Фильм успешно добавлен в избранные', ToastAndroid.SHORT);
             } else {
                 await actions.removeMovieFromLocalStorage(result);
                 await setSelected(false);
-                ToastAndroid.show("Фильм удален из списка избранных", ToastAndroid.SHORT);
+                ToastAndroid.show('Фильм удален из списка избранных', ToastAndroid.SHORT);
             }
         }
     };

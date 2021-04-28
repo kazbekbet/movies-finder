@@ -37,6 +37,14 @@ export const MovieListAppBarActions: React.FC = () => {
                 onPress={handleNavigate.bind(null, SortTypes.VOTE_COUNT)}
                 title={SortTypesLocalization[SortTypes.VOTE_COUNT]}
             />
+            <Menu.Item
+                onPress={handleNavigate.bind(null, SortTypes.VOTE_AVERAGE)}
+                title={SortTypesLocalization[SortTypes.VOTE_AVERAGE]}
+            />
+            <Menu.Item
+                onPress={handleNavigate.bind(null, SortTypes.RELEASE_DATE)}
+                title={SortTypesLocalization[SortTypes.RELEASE_DATE]}
+            />
         </Menu>
     );
 };

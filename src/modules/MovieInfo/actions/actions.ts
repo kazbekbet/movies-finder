@@ -8,7 +8,6 @@ import { LocalStorage } from '../../../common/enums/localStorage';
 import { ErrorsLocalization } from '../../../common/enums/errorsLocalization';
 import { MovieInfoUtils } from '../utils/MovieInfoUtils';
 import { IMovieShortInfo } from '../../MoviesList/store/models';
-import { ToastAndroid } from "react-native";
 import { remove } from 'lodash';
 
 export class MovieInfoActions {
