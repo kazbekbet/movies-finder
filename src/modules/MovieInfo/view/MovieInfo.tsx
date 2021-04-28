@@ -47,7 +47,7 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
     return (
         <>
             <ScrollView style={styles.container}>
-                {isPending(status) && result && <Spinner />}
+                {isPending(status) && !result && <Spinner />}
                 {!isPending(status) && result && (
                     <>
                         <Card.Cover source={{ uri: setPoster() }} />
