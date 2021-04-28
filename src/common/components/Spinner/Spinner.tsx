@@ -1,6 +1,19 @@
-import React from "react";
-import { ActivityIndicator, Colors } from "react-native-paper";
-import { themeConfig } from "../../theme/themeConfig";
+import React from 'react';
+import { ActivityIndicator } from 'react-native-paper';
+import { themeConfig } from '../../theme/themeConfig';
 
-export const Spinner: React.FC = () => <ActivityIndicator animating={true} color={themeConfig.colors.accent} size={32} />
+interface IOwnProps {
+    setDefaultPaddingTop?: boolean;
+}
+
+export const Spinner: React.FC<IOwnProps> = ({ setDefaultPaddingTop }) => {
+    return (
+        <ActivityIndicator
+            style={{ paddingTop: setDefaultPaddingTop ? 16 : 0 }}
+            animating={true}
+            color={themeConfig.colors.accent}
+            size={32}
+        />
+    );
+};
 

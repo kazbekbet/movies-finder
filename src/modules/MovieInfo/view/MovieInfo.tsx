@@ -40,14 +40,14 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
     const getGenres = () =>
         result?.genres?.map(genre => (
             <Chip key={genre.id} style={styles.chip}>
-                {genre.name}
+                {genre.name.charAt(0).toUpperCase() + genre.name.slice(1)}
             </Chip>
         ));
 
     return (
         <>
             <ScrollView style={styles.container}>
-                {isPending(status) && !result && <Spinner />}
+                {isPending(status) && !result && <Spinner setDefaultPaddingTop />}
                 {!isPending(status) && result && (
                     <>
                         <Card.Cover source={{ uri: setPoster() }} />
