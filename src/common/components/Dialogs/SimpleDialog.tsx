@@ -6,30 +6,31 @@ interface IOwnProps {
     description: string;
     onConfirm: () => void;
     onDismiss: () => void;
+    confirmText?: string;
+    cancelText?: string;
 }
 
-export const SimpleDialog: React.FC<IOwnProps> = ({ title, description, onConfirm, onDismiss }) => {
-    const [visible, setVisible] = React.useState(true);
+export const SimpleDialog: React.FC<IOwnProps> = props => {
+    const { title, description, onConfirm, onDismiss, confirmText, cancelText } = props;
 
     const handleConfirm = () => {
-        setVisible(false);
         onConfirm();
     };
 
     const handleDismiss = () => {
-        setVisible(false);
         onDismiss();
     };
 
     return (
         <Portal>
-            <Dialog visible={visible} onDismiss={handleDismiss}>
+            <Dialog visible={true} onDismiss={handleDismiss}>
                 {title && <Dialog.Title>{title}</Dialog.Title>}
                 <Dialog.Content>
                     <Paragraph>{description}</Paragraph>
                 </Dialog.Content>
                 <Dialog.Actions>
-                    <Button onPress={handleConfirm}>OK</Button>
+                    {cancelText && <Button onPress={handleDismiss}>{cancelText}</Button>}
+                    <Button onPress={handleConfirm}>{confirmText ?? 'OK'}</Button>
                 </Dialog.Actions>
             </Dialog>
         </Portal>

@@ -5,6 +5,7 @@ import { MovieListAppBarActions } from '../../modules/MoviesList/view/components
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { FavoritesMoviesAppBarHeader } from '../../modules/FavoritesMovies/view/components/FavoritesMoviesAppBarHeader';
 import { SearchMoviesAppBarHeader } from '../../modules/SearchMovies/view/components/SearchMoviesAppBarHeader';
+import { FavoritesMoviesAppBarActions } from "../../modules/FavoritesMovies/view/components/FavoritesMoviesAppBarActions";
 
 export const AppBarFactory = (route: string): Partial<StackNavigationOptions> => {
     switch (route) {
@@ -21,7 +22,7 @@ export const AppBarFactory = (route: string): Partial<StackNavigationOptions> =>
         case BottomBarRouterPaths.FAVORITES_MOVIES:
             return {
                 headerTitle: () => <FavoritesMoviesAppBarHeader />,
-                headerRight: undefined,
+                headerRight: () => <FavoritesMoviesAppBarActions />,
             };
         default:
             return {};

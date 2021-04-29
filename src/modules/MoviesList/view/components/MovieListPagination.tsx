@@ -20,7 +20,7 @@ export const MovieListPagination: React.FC<IOwnProps> = ({ onOpenNextPage, onOpe
     return (
         <View style={styles.container}>
             {currentPage === 1 && (
-                <Button mode={'outlined'} onPress={onOpenNextPage}>
+                <Button onPress={onOpenNextPage}>
                     Следующая страница
                 </Button>
             )}

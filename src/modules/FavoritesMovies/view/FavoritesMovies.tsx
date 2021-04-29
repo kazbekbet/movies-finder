@@ -3,11 +3,12 @@ import { NavigationModel } from '../../../router/types';
 import { useActions } from '../../../common/actionFactory/useActions';
 import { FavoritesMoviesActions } from '../actions/FavoritesMoviesActions';
 import { useAppSelector } from '../../../store/hooks';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { MovieCard } from '../../../common/components/MovieCard/MovieCard';
 import { isFulfilled, isPending } from '../../../common/statusCheckers/asyncStatusCheckers';
 import { Spinner } from '../../../common/components/Spinner/Spinner';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { IconButton, Paragraph } from 'react-native-paper';
-import { MovieListContent } from '../../MoviesList/view/components/MovieListContent';
+import { Paragraph } from 'react-native-paper';
+import { RouterPaths } from '../../../router/routerPaths';
 
 /** Модель свойств компонента. */
 interface IOwnProps extends NavigationModel {}
@@ -21,17 +22,38 @@ export const FavoritesMovies: React.FC<IOwnProps> = ({ route, navigation }) => {
         actions.getFavoritesMovies();
     }, []);
 
+    /** Переход к детальной информации о фильме. */
+    const handlePress = ({ id, title }: { id: number; title: string }) => {
+        navigation.navigate(RouterPaths.MOVIE_INFO, {
+            id,
+            title,
+        });
+    };
+
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
             {isPending(status) && <Spinner />}
-            {isFulfilled(status) && movies?.length === 0 && (
+            {!isPending(status) && !movies && (
                 <Paragraph style={styles.textContent}>Список избранных фильмов пуст</Paragraph>
             )}
-
-            <View style={styles.content}>
-                <MovieListContent movies={{ results: movies, page: 1 }} status={status} />
-            </View>
-        </ScrollView>
+            {isFulfilled(status) && movies && (
+                <FlatList
+                    style={styles.content}
+                    data={movies}
+                    keyExtractor={movie => movie.id.toString()}
+                    renderItem={movie => (
+                        <MovieCard
+                            title={movie.item.title}
+                            description={movie.item.overview}
+                            posterPath={movie.item.backdrop_path}
+                            onPress={handlePress.bind(null, { id: movie.item.id, title: movie.item.title })}
+                            voteAverage={movie.item.vote_average}
+                            releaseDate={movie.item.release_date}
+                        />
+                    )}
+                />
+            )}
+        </View>
     );
 };
 
@@ -39,12 +61,12 @@ export const FavoritesMovies: React.FC<IOwnProps> = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#efefef',
-        paddingVertical: 12,
     },
     content: {
-        marginBottom: 16,
+        paddingVertical: 12,
     },
     textContent: {
         textAlign: 'center',
+        paddingTop: 16
     },
 });
