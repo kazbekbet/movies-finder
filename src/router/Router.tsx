@@ -4,8 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { themeConfig } from '../common/theme/themeConfig';
 import { RouterPaths } from './routerPaths';
 import { MovieInfo } from '../modules/MovieInfo/view/MovieInfo';
-import { NavigationDrawerRoutes } from './NavigationDrawerRoutes';
-import { MainTabRoutes } from "./MainTabRoutes";
+import { MainTabRoutes } from './MainTabRoutes';
 
 const Stack = createStackNavigator();
 

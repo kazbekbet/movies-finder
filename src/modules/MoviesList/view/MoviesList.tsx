@@ -9,22 +9,15 @@ import { ChangePageTypes } from '../actions/types';
 import { useAppSelector } from '../../../store/hooks';
 import { useActions } from '../../../common/actionFactory/useActions';
 import { NavigationModel } from '../../../router/types';
-import { RouterPaths } from '../../../router/routerPaths';
 import { MovieListActions } from '../actions/actions';
-import { CommonActions } from '../../../common/store/actions';
 
 /** Модель свойств компонента. */
-interface IOwnProps extends NavigationModel<RouterPaths.MOVIES_LIST> {}
+interface IOwnProps extends NavigationModel {}
 
 /** Компонент списка фильмов. */
 const MoviesList: React.FC<IOwnProps> = ({ route }) => {
     const { movies, status, page, sortBy } = useAppSelector(state => state.moviesList);
     const actions = useActions(actions => actions.moviesList) as MovieListActions;
-    const commonActions = useActions(actions => actions.common) as CommonActions;
-
-    useEffect(() => {
-        commonActions.setCurrentRoute(RouterPaths.MOVIES_LIST);
-    }, [route.name]);
 
     useEffect(() => {
         if (sortBy) {

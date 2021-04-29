@@ -4,7 +4,7 @@ import { CommonActions } from '../../../common/store/actions';
 import { clearMovieInfoData, getMovieInfoFulfilled, getMovieInfoPending, getMovieInfoRejected } from '../store/reducer';
 import { IMovieInfoResult } from '../store/models';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LocalStorage } from '../../../common/enums/localStorage';
+import { ELocalStorage } from '../../../common/enums/localStorage';
 import { ErrorsLocalization } from '../../../common/enums/errorsLocalization';
 import { MovieInfoUtils } from '../utils/MovieInfoUtils';
 import { IMovieShortInfo } from '../../MoviesList/store/models';
@@ -38,13 +38,13 @@ export class MovieInfoActions {
     public setMovieToLocalStorage = async (movie: IMovieInfoResult) => {
         const shortMovieInfo = this.utils.getShortMovieInfo(movie);
         try {
-            const storedDataValue = await AsyncStorage.getItem(LocalStorage.FAVOURITES_MOVIES);
+            const storedDataValue = await AsyncStorage.getItem(ELocalStorage.FAVOURITES_MOVIES);
             if (storedDataValue) {
                 const storedData = JSON.parse(storedDataValue) as IMovieShortInfo[];
-                const mergedData = [...storedData, shortMovieInfo];
-                await AsyncStorage.setItem(LocalStorage.FAVOURITES_MOVIES, JSON.stringify(mergedData));
+                const mergedData = [shortMovieInfo, ...storedData];
+                await AsyncStorage.setItem(ELocalStorage.FAVOURITES_MOVIES, JSON.stringify(mergedData));
             } else {
-                await AsyncStorage.setItem(LocalStorage.FAVOURITES_MOVIES, JSON.stringify([shortMovieInfo]));
+                await AsyncStorage.setItem(ELocalStorage.FAVOURITES_MOVIES, JSON.stringify([shortMovieInfo]));
             }
         } catch (e) {
             this.commonActions.setError(ErrorsLocalization.MOVIE_SAVING);
@@ -54,7 +54,7 @@ export class MovieInfoActions {
     /** Получение списка фильмов. */
     public getMoviesFromLocalStorage = async () => {
         try {
-            const storedDataValue = await AsyncStorage.getItem(LocalStorage.FAVOURITES_MOVIES);
+            const storedDataValue = await AsyncStorage.getItem(ELocalStorage.FAVOURITES_MOVIES);
             if (storedDataValue) return JSON.parse(storedDataValue) as IMovieShortInfo[];
         } catch (e) {
             this.commonActions.setError(ErrorsLocalization.GET_SAVED_MOVIE);
@@ -77,8 +77,8 @@ export class MovieInfoActions {
     /** Перезапись данных. */
     private setNewStoredData = async (newData: IMovieShortInfo[]) => {
         try {
-            await AsyncStorage.removeItem(LocalStorage.FAVOURITES_MOVIES);
-            await AsyncStorage.setItem(LocalStorage.FAVOURITES_MOVIES, JSON.stringify(newData));
+            await AsyncStorage.removeItem(ELocalStorage.FAVOURITES_MOVIES);
+            await AsyncStorage.setItem(ELocalStorage.FAVOURITES_MOVIES, JSON.stringify(newData));
         } catch (e) {
             console.warn(ErrorsLocalization.SET_NEW_MOVIES_DATA);
         }

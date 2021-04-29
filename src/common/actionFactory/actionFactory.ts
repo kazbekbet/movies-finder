@@ -4,6 +4,7 @@ import { MovieListActions } from '../../modules/MoviesList/actions/actions';
 import { CommonActions } from '../store/actions';
 import { MovieInfoServices } from '../../modules/MovieInfo/services/services';
 import { MovieInfoActions } from '../../modules/MovieInfo/actions/actions';
+import { FavoritesMoviesActions } from '../../modules/FavoritesMovies/actions/FavoritesMoviesActions';
 
 /** Фабрика экшенов. */
 export class ActionsFactory {
@@ -24,5 +25,10 @@ export class ActionsFactory {
     public get movieInfo() {
         const services = new MovieInfoServices();
         return new MovieInfoActions(services, this.dispatch);
+    }
+
+    /** Возвращает все экшены для компонента избранных фильмов. */
+    public get favoritesMovies() {
+        return new FavoritesMoviesActions(this.dispatch);
     }
 }

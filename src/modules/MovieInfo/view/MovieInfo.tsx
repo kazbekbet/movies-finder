@@ -1,6 +1,5 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import { NavigationModel } from '../../../router/types';
-import { RouterPaths } from '../../../router/routerPaths';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { MovieInfoAppBarHeader } from './components/MovieInfoAppBarHeader';
 import { useActions } from '../../../common/actionFactory/useActions';
@@ -14,7 +13,7 @@ import { textColorsConfig } from '../../../common/theme/themeConfig';
 import { MovieInfoAppBarActions } from './components/MovieInfoAppBarActions';
 
 /** Модель свойств компонента. */
-interface IOwnProps extends NavigationModel<RouterPaths.MOVIE_INFO> {}
+interface IOwnProps extends NavigationModel {}
 
 /** Компонент детальной информации о фильме. */
 export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
@@ -24,14 +23,17 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
     /** Специальные опции для AppBar. */
     useLayoutEffect(() => {
         navigation.setOptions({
-            headerTitle: () => <MovieInfoAppBarHeader title={route.params.title} />,
+            headerTitle: () => <MovieInfoAppBarHeader title={route.params?.title ?? 'Ошибка загрузки'} />,
             headerRight: () => <MovieInfoAppBarActions />,
         });
     }, [navigation]);
 
     /** Действия при маунте компонента. */
     useEffect(() => {
-        actions.getMovieInfo(route.params.id);
+        if (route.params?.id) {
+            actions.getMovieInfo(route.params.id);
+        }
+
         return () => actions.clearMovieInfoData();
     }, []);
 

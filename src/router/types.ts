@@ -6,9 +6,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
  * Модель для навигации в компонентах.
  * Используется для наследования в модели пропсов компонента.
  * */
-export interface NavigationModel<T extends RouterPaths> {
-    navigation: StackNavigationProp<RootStackParamList, T>;
-    route: RouteProp<RootStackParamList, T>;
+export interface NavigationModel {
+    navigation: StackNavigationProp<RootStackParamList, keyof RootStackParamList>;
+    route: RouteProp<RootStackParamList, keyof RootStackParamList>;
 }
 
 /** Типизация параметров роутинга. */

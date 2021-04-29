@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { AppBarHeader } from '../../../../common/components/AppBar/AppBarHeader';
 
 interface IOwnProps {
     title: string;
@@ -12,13 +12,5 @@ export const MovieInfoAppBarHeader: React.FC<IOwnProps> = ({ title }) => {
         return title;
     };
 
-    return <Text style={styles.header}>{getTitle()}</Text>;
+    return <AppBarHeader title={getTitle()} />;
 };
-
-const styles = StyleSheet.create({
-    header: {
-        fontSize: 20,
-        color: '#fff',
-        fontWeight: 'bold',
-    },
-});

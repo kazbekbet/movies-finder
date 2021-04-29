@@ -3,32 +3,43 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import MoviesList from '../modules/MoviesList/view/MoviesList';
 import { themeConfig } from '../common/theme/themeConfig';
 import { NavigationModel } from './types';
-import { RouterPaths } from './routerPaths';
-import { useAppSelector } from '../store/hooks';
+import { BottomBarRouterPaths } from './routerPaths';
+import { FavoritesMovies } from '../modules/FavoritesMovies/view/FavoritesMovies';
 import { AppBarFactory } from '../common/appBar/AppBarFactory';
-import { FavoritesMovies } from "../modules/FavoritesMovies/view/FavoritesMovies";
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { SearchMovies } from '../modules/SearchMovies/view/SearchMovies';
 
 const Tab = createMaterialBottomTabNavigator();
 
 /** Модель свойств компонента. */
-interface IOwnProps extends NavigationModel<RouterPaths.MOVIES_LIST> {}
+interface IOwnProps extends NavigationModel {}
 
-export const MainTabRoutes: React.FC<IOwnProps> = ({ navigation }) => {
-    const { currentRoute } = useAppSelector(state => state.common);
-
+export const MainTabRoutes: React.FC<IOwnProps> = ({ route, navigation }) => {
     /** Специальные опции для AppBar. */
     useLayoutEffect(() => {
-        if (currentRoute) {
-            navigation.setOptions(AppBarFactory({ route: currentRoute }));
-        }
-    }, [navigation, currentRoute]);
+        const routeName = getFocusedRouteNameFromRoute(route) ?? BottomBarRouterPaths.MOVIES_LIST;
+        navigation.setOptions(AppBarFactory(routeName));
+    }, [navigation, route]);
 
     return (
-        <Tab.Navigator shifting activeColor={themeConfig.colors.primary} barStyle={{ backgroundColor: '#fff' }}>
-            <Tab.Screen name='Подборки' options={{ tabBarIcon: 'movie-open-outline' }} component={MoviesList} />
-            <Tab.Screen name='Поиск' options={{ tabBarIcon: 'movie-search-outline' }} component={MoviesList} />
+        <Tab.Navigator
+            initialRouteName={BottomBarRouterPaths.MOVIES_LIST}
+            shifting
+            activeColor={themeConfig.colors.primary}
+            barStyle={{ backgroundColor: '#fff' }}
+        >
             <Tab.Screen
-                name='Избранное'
+                name={BottomBarRouterPaths.MOVIES_LIST}
+                options={{ tabBarIcon: 'movie-open-outline' }}
+                component={MoviesList}
+            />
+            <Tab.Screen
+                name={BottomBarRouterPaths.SEARCH_MOVIES}
+                options={{ tabBarIcon: 'movie-search-outline' }}
+                component={SearchMovies}
+            />
+            <Tab.Screen
+                name={BottomBarRouterPaths.FAVORITES_MOVIES}
                 options={{ tabBarIcon: 'folder-star-multiple-outline' }}
                 component={FavoritesMovies}
             />

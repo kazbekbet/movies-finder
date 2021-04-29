@@ -1,25 +1,28 @@
 import React from 'react';
-import { RouterPaths } from '../../router/routerPaths';
+import { BottomBarRouterPaths } from '../../router/routerPaths';
 import { MovieListAppBarHeader } from '../../modules/MoviesList/view/components/MovieListAppBarHeader';
 import { MovieListAppBarActions } from '../../modules/MoviesList/view/components/MovieListAppBarActions';
 import { StackNavigationOptions } from '@react-navigation/stack';
-import { Text } from "react-native";
+import { FavoritesMoviesAppBarHeader } from '../../modules/FavoritesMovies/view/components/FavoritesMoviesAppBarHeader';
+import { SearchMoviesAppBarHeader } from '../../modules/SearchMovies/view/components/SearchMoviesAppBarHeader';
 
-interface IOwnProps {
-    route: RouterPaths;
-}
-
-export const AppBarFactory = ({ route }: IOwnProps): Partial<StackNavigationOptions> => {
+export const AppBarFactory = (route: string): Partial<StackNavigationOptions> => {
     switch (route) {
-        case RouterPaths.MOVIES_LIST:
+        case BottomBarRouterPaths.MOVIES_LIST:
             return {
                 headerTitle: () => <MovieListAppBarHeader />,
                 headerRight: () => <MovieListAppBarActions />,
             };
-        case RouterPaths.FAVORITES_MOVIES:
+        case BottomBarRouterPaths.SEARCH_MOVIES:
             return {
-                headerTitle: () => <Text>Избранное</Text>
-            }
+                headerTitle: () => <SearchMoviesAppBarHeader />,
+                headerRight: undefined,
+            };
+        case BottomBarRouterPaths.FAVORITES_MOVIES:
+            return {
+                headerTitle: () => <FavoritesMoviesAppBarHeader />,
+                headerRight: undefined,
+            };
         default:
             return {};
     }

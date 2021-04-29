@@ -10,7 +10,7 @@ export interface IMovieListModule {
 
 export interface IMovieListResponse {
     page: number;
-    results: IMovieShortInfo[];
+    results: IMovieShortInfo[] | null;
 }
 
 export interface IMovieShortInfo {

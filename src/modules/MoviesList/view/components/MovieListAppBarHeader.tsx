@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppSelector } from '../../../../store/hooks';
-import { StyleSheet, Text } from 'react-native';
 import { SortTypesLocalization } from '../../../../common/enums/sortTypes';
+import { AppBarHeader } from '../../../../common/components/AppBar/AppBarHeader';
 
 export const MovieListAppBarHeader: React.FC = () => {
     const { page, sortBy } = useAppSelector(store => store.moviesList);
@@ -12,22 +12,5 @@ export const MovieListAppBarHeader: React.FC = () => {
         } else return 'Ошибка данных';
     };
 
-    return (
-        <>
-            <Text style={styles.header}>Список фильмов</Text>
-            <Text style={styles.subheader}>{getSubheaderContent()}</Text>
-        </>
-    );
+    return <AppBarHeader title='Список фильмов' subtitle={getSubheaderContent()} />;
 };
-
-const styles = StyleSheet.create({
-    header: {
-        fontSize: 20,
-        color: '#fff',
-        fontWeight: 'bold',
-    },
-    subheader: {
-        fontSize: 12,
-        color: 'rgba(255, 255, 255, 0.8)',
-    },
-});

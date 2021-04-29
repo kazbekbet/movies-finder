@@ -7,7 +7,7 @@ import { MovieListAppBarHeader } from '../modules/MoviesList/view/components/Mov
 import { MovieListAppBarActions } from '../modules/MoviesList/view/components/MovieListAppBarActions';
 
 /** Модель свойств компонента. */
-interface IOwnProps extends NavigationModel<RouterPaths.MOVIES_LIST> {}
+interface IOwnProps extends NavigationModel {}
 
 const Drawer = createDrawerNavigator();
 
