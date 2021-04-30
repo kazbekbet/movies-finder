@@ -34,10 +34,9 @@ export class MovieInfoActions {
     };
 
     /** Запись фильма в локальное хранилище. */
-    public setMovieToLocalStorage = async (movie: IMovieInfoResult) => {
-        const shortMovieInfo = this.utils.getShortMovieInfo(movie);
+    public setMovieToLocalStorage = async (movie: IMovieShortInfo) => {
         try {
-            await this.localStorage.setItemToArray<IMovieShortInfo>(shortMovieInfo, ELocalStorage.FAVOURITES_MOVIES);
+            await this.localStorage.setItemToArray<IMovieShortInfo>(movie, ELocalStorage.FAVOURITES_MOVIES);
         } catch (e) {
             this.commonActions.setError(ErrorsLocalization.MOVIE_SAVING);
         }

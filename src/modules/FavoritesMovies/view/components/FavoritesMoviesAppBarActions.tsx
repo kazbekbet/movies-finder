@@ -29,16 +29,15 @@ export const FavoritesMoviesAppBarActions: React.FC = () => {
                 size={24}
                 onPress={handleShowDialog}
             />
-            {showDialog && (
-                <SimpleDialog
-                    title={'Очистка избранного'}
-                    description={'Вы уверены, что желаете удалить все избранные фильмы из списка?'}
-                    confirmText={'Подтвердить'}
-                    cancelText={'Отмена'}
-                    onConfirm={handlePress}
-                    onDismiss={handleCloseDialog}
-                />
-            )}
+            <SimpleDialog
+                isVisible={showDialog}
+                title={'Очистка избранного'}
+                description={'Вы уверены, что желаете удалить все избранные фильмы из списка?'}
+                confirmText={'Подтвердить'}
+                cancelText={'Отмена'}
+                onConfirm={handlePress}
+                onDismiss={handleCloseDialog}
+            />
         </>
     );
 };

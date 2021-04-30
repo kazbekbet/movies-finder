@@ -38,12 +38,13 @@ export const FavoritesMovies: React.FC<IOwnProps> = ({ route, navigation }) => {
             )}
             {isFulfilled(status) && movies && (
                 <FlatList
-                    style={styles.content}
                     data={movies}
                     keyExtractor={movie => movie.id.toString()}
                     renderItem={movie => (
                         <MovieCard
                             title={movie.item.title}
+                            shortMovieInfo={movie.item}
+                            id={movie.item.id}
                             description={movie.item.overview}
                             posterPath={movie.item.backdrop_path}
                             onPress={handlePress.bind(null, { id: movie.item.id, title: movie.item.title })}
@@ -61,9 +62,7 @@ export const FavoritesMovies: React.FC<IOwnProps> = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#efefef',
-    },
-    content: {
-        paddingVertical: 12,
+        flex: 1,
     },
     textContent: {
         textAlign: 'center',

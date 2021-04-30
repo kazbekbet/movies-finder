@@ -16,14 +16,14 @@ export const ErrorHandler: React.FC<IOwnProps> = ({ children }) => {
 
     return (
         <>
-            {isError && (
-                <SimpleDialog
-                    title={'Ошибка'}
-                    description={errorText}
-                    onConfirm={actions.clearError}
-                    onDismiss={actions.clearError}
-                />
-            )}
+            <SimpleDialog
+                isVisible={isError}
+                title={'Ошибка'}
+                description={errorText}
+                onConfirm={actions.clearError}
+                onDismiss={actions.clearError}
+            />
+
             {children}
         </>
     );

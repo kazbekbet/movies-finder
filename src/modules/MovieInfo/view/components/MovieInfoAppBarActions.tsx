@@ -35,7 +35,8 @@ export const MovieInfoAppBarActions: React.FC = () => {
     const handleAddToFavourites = async () => {
         if (result) {
             if (!selected) {
-                await actions.setMovieToLocalStorage(result);
+                const shortMovieInfo = utils.getShortMovieInfo(result);
+                await actions.setMovieToLocalStorage(shortMovieInfo);
                 await setSelected(true);
                 await ToastAndroid.show('Фильм успешно добавлен в избранные', ToastAndroid.SHORT);
                 await favoritesActions.getFavoritesMovies();

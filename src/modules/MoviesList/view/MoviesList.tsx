@@ -36,7 +36,7 @@ const MoviesList: React.FC<IOwnProps> = ({ route }) => {
     return (
         <>
             <ScrollView style={styles.container}>
-                {isPending(status) && <Spinner />}
+                {isPending(status) && <Spinner setDefaultPaddingTop/>}
                 <MovieListContent movies={movies} status={status} />
                 {!isPending(status) && movies && (
                     <MovieListPagination
@@ -54,7 +54,6 @@ const MoviesList: React.FC<IOwnProps> = ({ route }) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#efefef',
-        paddingVertical: 12,
     },
 });
 

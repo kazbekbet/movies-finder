@@ -28,6 +28,8 @@ export const MovieListContent: React.FC<IOwnProps> = ({ movies, status }) => {
                 movies.results.map(movie => (
                     <MovieCard
                         onPress={handlePress.bind(null, { id: movie.id, title: movie.title })}
+                        shortMovieInfo={movie}
+                        id={movie.id}
                         key={movie.id}
                         title={movie.title}
                         description={movie.overview}

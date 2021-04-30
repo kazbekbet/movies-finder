@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ELocalStorage } from '../enums/localStorage';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash';
 
 /** Общий класс работы с локальным хранилищем. */
 export class LocalStorage {
@@ -29,11 +29,13 @@ export class LocalStorage {
 
         if (item) {
             if (storedData) {
-                const mergedData = [item, ...storedData];
-                await AsyncStorage.setItem(key, JSON.stringify(mergedData));
+                const foundItem = storedData.find(stored => isEqual(stored, item));
+                if (!foundItem) {
+                    const mergedData = [item].concat(storedData);
+                    await AsyncStorage.setItem(key, JSON.stringify(mergedData));
+                }
             } else {
                 await AsyncStorage.setItem(key, JSON.stringify([item]));
-                console.log(await AsyncStorage.getItem(key))
             }
         }
     };
