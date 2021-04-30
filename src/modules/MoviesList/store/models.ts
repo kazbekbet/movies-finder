@@ -22,4 +22,5 @@ export interface IMovieShortInfo {
     popularity: number;
     vote_average: number;
     release_date: string;
+    vote_count: number
 }

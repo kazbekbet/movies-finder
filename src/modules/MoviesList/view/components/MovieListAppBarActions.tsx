@@ -26,22 +26,27 @@ export const MovieListAppBarActions: React.FC = () => {
             anchor={<IconButton icon='filter-menu-outline' color={'#fff'} size={24} onPress={openMenu} />}
         >
             <Menu.Item
+                icon='star-outline'
                 onPress={handleNavigate.bind(null, SortTypes.POPULARITY)}
                 title={SortTypesLocalization[SortTypes.POPULARITY]}
             />
             <Menu.Item
+                icon='currency-usd'
                 onPress={handleNavigate.bind(null, SortTypes.REVENUE)}
                 title={SortTypesLocalization[SortTypes.REVENUE]}
             />
             <Menu.Item
+                icon='account-group-outline'
                 onPress={handleNavigate.bind(null, SortTypes.VOTE_COUNT)}
                 title={SortTypesLocalization[SortTypes.VOTE_COUNT]}
             />
             <Menu.Item
+                icon='account-star-outline'
                 onPress={handleNavigate.bind(null, SortTypes.VOTE_AVERAGE)}
                 title={SortTypesLocalization[SortTypes.VOTE_AVERAGE]}
             />
             <Menu.Item
+                icon='calendar-range'
                 onPress={handleNavigate.bind(null, SortTypes.RELEASE_DATE)}
                 title={SortTypesLocalization[SortTypes.RELEASE_DATE]}
             />

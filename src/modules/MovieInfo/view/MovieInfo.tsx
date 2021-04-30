@@ -7,10 +7,11 @@ import { MovieInfoActions } from '../actions/actions';
 import { isPending } from '../../../common/statusCheckers/asyncStatusCheckers';
 import { Spinner } from '../../../common/components/Spinner/Spinner';
 import { useAppSelector } from '../../../store/hooks';
-import { Card, Chip, Paragraph, Title } from 'react-native-paper';
+import { Caption, Card, Chip, Paragraph, Title } from 'react-native-paper';
 import { ApiConfig } from '../../../common/api/config';
 import { textColorsConfig } from '../../../common/theme/themeConfig';
 import { MovieInfoAppBarActions } from './components/MovieInfoAppBarActions';
+import { isEmpty } from 'lodash';
 
 /** Модель свойств компонента. */
 interface IOwnProps extends NavigationModel {}
@@ -32,6 +33,7 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
     useEffect(() => {
         if (route.params?.id) {
             actions.getMovieInfo(route.params.id);
+            console.log(route.params.id)
         }
 
         return () => actions.clearMovieInfoData();
@@ -54,7 +56,8 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
                     <>
                         <Card.Cover source={{ uri: setPoster() }} />
                         <View style={styles.content}>
-                            <Title>{result?.title}</Title>
+                            <Title>{result.title}</Title>
+                            {!isEmpty(result.tagline) && <Caption>{result.tagline}</Caption>}
 
                             <ScrollView
                                 showsHorizontalScrollIndicator={false}

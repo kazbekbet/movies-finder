@@ -3,12 +3,14 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { commonSlice } from '../common/store/commonReducer';
 import { movieInfoSlice } from '../modules/MovieInfo/store/reducer';
 import { favoritesMoviesSlice } from '../modules/FavoritesMovies/store/reducer';
+import { searchMoviesSlice } from '../modules/SearchMovies/store/reducer';
 
 const rootReducer = combineReducers({
     common: commonSlice.reducer,
     moviesList: moviesListSlice.reducer,
     movieInfo: movieInfoSlice.reducer,
     favoritesMovies: favoritesMoviesSlice.reducer,
+    searchMovies: searchMoviesSlice.reducer,
 });
 
 export const globalStore = configureStore({

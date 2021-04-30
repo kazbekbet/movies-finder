@@ -5,6 +5,8 @@ import { CommonActions } from '../store/actions';
 import { MovieInfoServices } from '../../modules/MovieInfo/services/services';
 import { MovieInfoActions } from '../../modules/MovieInfo/actions/actions';
 import { FavoritesMoviesActions } from '../../modules/FavoritesMovies/actions/FavoritesMoviesActions';
+import { SearchMoviesActions } from '../../modules/SearchMovies/actions/actions';
+import { SearchMoviesServices } from '../../modules/SearchMovies/services/services';
 
 /** Фабрика экшенов. */
 export class ActionsFactory {
@@ -30,5 +32,11 @@ export class ActionsFactory {
     /** Возвращает все экшены для компонента избранных фильмов. */
     public get favoritesMovies() {
         return new FavoritesMoviesActions(this.dispatch);
+    }
+
+    /** Возвращает все экшены для компонента поиска фильмов. */
+    public get searchMovies() {
+        const services = new SearchMoviesServices();
+        return new SearchMoviesActions(services, this.dispatch);
     }
 }

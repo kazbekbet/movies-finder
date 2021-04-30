@@ -4,15 +4,16 @@ import { themeConfig } from '../../theme/themeConfig';
 
 interface IOwnProps {
     setDefaultPaddingTop?: boolean;
+    customSize?: number
 }
 
-export const Spinner: React.FC<IOwnProps> = ({ setDefaultPaddingTop }) => {
+export const Spinner: React.FC<IOwnProps> = ({ setDefaultPaddingTop, customSize }) => {
     return (
         <ActivityIndicator
             style={{ paddingTop: setDefaultPaddingTop ? 16 : 0 }}
             animating={true}
             color={themeConfig.colors.accent}
-            size={32}
+            size={customSize ?? 32}
         />
     );
 };

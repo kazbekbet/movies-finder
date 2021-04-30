@@ -15,7 +15,7 @@ import { MovieListActions } from '../actions/actions';
 interface IOwnProps extends NavigationModel {}
 
 /** Компонент списка фильмов. */
-const MoviesList: React.FC<IOwnProps> = ({ route }) => {
+const MoviesList: React.FC<IOwnProps> = ({ }) => {
     const { movies, status, page, sortBy } = useAppSelector(state => state.moviesList);
     const actions = useActions(actions => actions.moviesList) as MovieListActions;
 

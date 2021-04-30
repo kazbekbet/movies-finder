@@ -8,7 +8,7 @@ import { SimpleDialog } from '../Dialogs/SimpleDialog';
 import { useActions } from '../../actionFactory/useActions';
 import { MovieInfoActions } from '../../../modules/MovieInfo/actions/actions';
 import { IMovieShortInfo } from '../../../modules/MoviesList/store/models';
-import { FavoritesMoviesActions } from "../../../modules/FavoritesMovies/actions/FavoritesMoviesActions";
+import { FavoritesMoviesActions } from '../../../modules/FavoritesMovies/actions/FavoritesMoviesActions';
 
 /**
  * Модель пропсов для компонента карточки фильма.
@@ -42,6 +42,7 @@ export const MovieCard: React.FC<IOwnProps> = props => {
             if (description.length <= 140) return description;
             return `${description.slice(0, 120)}...`;
         }
+        return 'Без описания';
     };
 
     const setPoster = () => `${ApiConfig.POSTER_URL}${posterPath}`;

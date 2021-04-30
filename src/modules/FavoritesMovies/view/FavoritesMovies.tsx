@@ -14,7 +14,7 @@ import { RouterPaths } from '../../../router/routerPaths';
 interface IOwnProps extends NavigationModel {}
 
 /** Компонент списка избранных фильмов. */
-export const FavoritesMovies: React.FC<IOwnProps> = ({ route, navigation }) => {
+export const FavoritesMovies: React.FC<IOwnProps> = ({ navigation }) => {
     const { status, movies } = useAppSelector(state => state.favoritesMovies);
     const actions = useActions(actions => actions.favoritesMovies) as FavoritesMoviesActions;
 
@@ -32,7 +32,7 @@ export const FavoritesMovies: React.FC<IOwnProps> = ({ route, navigation }) => {
 
     return (
         <View style={styles.container}>
-            {isPending(status) && <Spinner />}
+            {isPending(status) && <Spinner setDefaultPaddingTop />}
             {!isPending(status) && !movies && (
                 <Paragraph style={styles.textContent}>Список избранных фильмов пуст</Paragraph>
             )}
@@ -66,6 +66,6 @@ const styles = StyleSheet.create({
     },
     textContent: {
         textAlign: 'center',
-        paddingTop: 16
+        paddingTop: 16,
     },
 });
