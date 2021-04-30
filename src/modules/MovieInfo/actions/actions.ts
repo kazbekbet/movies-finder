@@ -55,10 +55,9 @@ export class MovieInfoActions {
     /** Удаление фильма из списка. */
     public removeMovieFromLocalStorage = async (movie: IMovieInfoResult) => {
         try {
-            await this.localStorage.removeItemFromArray(
-                movie,
+            await this.localStorage.removeItemFromArray<IMovieShortInfo>(
                 ELocalStorage.FAVOURITES_MOVIES,
-                storedMovie => storedMovie.id !== movie.id
+                storedMovie => storedMovie.id === movie.id
             );
         } catch (e) {
             this.commonActions.setError(ErrorsLocalization.REMOVE_SAVED_MOVIE);

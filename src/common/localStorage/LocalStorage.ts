@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ELocalStorage } from '../enums/localStorage';
-import { remove } from 'lodash';
+import { cloneDeep } from 'lodash';
 
 /** Общий класс работы с локальным хранилищем. */
 export class LocalStorage {
@@ -26,12 +26,14 @@ export class LocalStorage {
      * */
     public setItemToArray = async <T>(item: T, key: ELocalStorage) => {
         const storedData = await this.getData<T[]>(key);
+
         if (item) {
             if (storedData) {
                 const mergedData = [item, ...storedData];
                 await AsyncStorage.setItem(key, JSON.stringify(mergedData));
             } else {
                 await AsyncStorage.setItem(key, JSON.stringify([item]));
+                console.log(await AsyncStorage.getItem(key))
             }
         }
     };
@@ -39,15 +41,18 @@ export class LocalStorage {
     /**
      * Удаление элемента из локального стора (массив).
      *
-     * @param item - Записываемый элемент.
      * @param {ELocalStorage} key - Ключ, по которому необходимо произвести запись.
      * @param {Function} condition - Условие поиска.
      * */
-    public removeItemFromArray = async <T>(item: T, key: ELocalStorage, condition: (el: T) => void) => {
+    public removeItemFromArray = async <T>(key: ELocalStorage, condition: (el: T) => void) => {
         const storedData = await this.getData<T[]>(key);
         if (storedData) {
-            const newData = remove(storedData, condition);
-            await this.setNewStoredData(newData, key);
+            const foundElement = storedData.findIndex(condition);
+            if (foundElement !== -1) {
+                const newData = cloneDeep(storedData);
+                newData.splice(foundElement, 1);
+                await this.setNewStoredData(newData, key);
+            }
         }
     };
 
