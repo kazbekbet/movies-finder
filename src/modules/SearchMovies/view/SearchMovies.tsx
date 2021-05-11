@@ -15,7 +15,9 @@ import { SearchMoviesActions } from '../actions/actions';
 interface IOwnProps extends NavigationModel {}
 
 export const SearchMovies: React.FC<IOwnProps> = React.memo(({ navigation }) => {
-    const { query, status, movies, page, newPageLoadStatus } = useAppSelector(state => state.searchMovies);
+    const { query, lastQueryValue, status, movies, page, newPageLoadStatus } = useAppSelector(
+        state => state.searchMovies
+    );
     const { changePage, loadNewPageData } = useActions(actions => actions.searchMovies) as SearchMoviesActions;
 
     useEffect(() => {
@@ -48,7 +50,7 @@ export const SearchMovies: React.FC<IOwnProps> = React.memo(({ navigation }) => 
             )}
 
             {isFulfilled(status) && isEmpty(movies?.results) && (
-                <Caption style={styles.textContent}>По запросу "{query}" не найдено результатов.</Caption>
+                <Caption style={styles.textContent}>По запросу "{lastQueryValue}" не найдено результатов.</Caption>
             )}
 
             {isFulfilled(status) && movies && (

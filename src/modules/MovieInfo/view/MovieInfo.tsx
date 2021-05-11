@@ -33,7 +33,6 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
     useEffect(() => {
         if (route.params?.id) {
             actions.getMovieInfo(route.params.id);
-            console.log(route.params.id)
         }
 
         return () => actions.clearMovieInfoData();

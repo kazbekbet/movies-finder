@@ -24,7 +24,7 @@ export class SearchMoviesActions {
     /** Отправка запроса на поиск фильма. */
     submitQueryValue = async (query: string, page: number) => {
         try {
-            await this.dispatch(getSearchListPending(page));
+            await this.dispatch(getSearchListPending({page, query}));
             const response = await this.services.searchMovies(query, 1);
             await this.dispatch(getSearchListFulfilled(response.data));
         } catch (e) {

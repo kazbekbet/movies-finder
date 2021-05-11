@@ -23,6 +23,20 @@ describe('Movie List test suite', () => {
         movies: null,
     };
 
+    const mockMoviesResults = [
+        {
+            id: 1,
+            title: 'Test',
+            overview: 'Test',
+            backdrop_path: 'Test',
+            original_title: 'Test',
+            popularity: 3,
+            vote_average: 2,
+            release_date: 'Test',
+            vote_count: 43,
+        },
+    ];
+
     afterEach(() => dispatch(setDefaultState()));
 
     test('Should switch to pending status', () => {
@@ -37,20 +51,6 @@ describe('Movie List test suite', () => {
     });
 
     test('Should set movies results', () => {
-        const mockMoviesResults = [
-            {
-                id: 1,
-                title: 'Test',
-                overview: 'Test',
-                backdrop_path: 'Test',
-                original_title: 'Test',
-                popularity: 3,
-                vote_average: 2,
-                release_date: 'Test',
-                vote_count: 43,
-            },
-        ];
-
         dispatch(getListDataFulfilled({ page: 1, results: mockMoviesResults }));
 
         expect(getCurrentState()).toEqual({
@@ -79,7 +79,8 @@ describe('Movie List test suite', () => {
     });
 
     test('Should clear all fetched data', () => {
+        dispatch(getListDataFulfilled({page: 1, results: mockMoviesResults}))
         dispatch(clearFetchedData());
-        expect(getCurrentState()).toEqual(initialState);
+        expect(getCurrentState()).toEqual({...initialState, status: PromiseStatuses.FULFILLED});
     });
 });

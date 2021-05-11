@@ -3,6 +3,7 @@ import { PromiseStatuses } from '../../../common/enums/asyncActionStatuses';
 
 export interface IMovieSearchModule {
     query: string;
+    lastQueryValue: string;
     status: PromiseStatuses;
     page: number;
     movies: IMovieSearchResults | null;

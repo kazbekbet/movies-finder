@@ -10,12 +10,20 @@ export const SearchMoviesAppBarHeader: React.FC = () => {
     const { query, page } = useAppSelector(state => state.searchMovies);
     const actions = useActions(actions => actions.searchMovies) as SearchMoviesActions;
 
-    const handleChangeText = (query: string) => {
+    function handleChangeText(query: string) {
         actions.setQueryValue(query);
         if (query.length === 0) actions.clearData();
-    };
-    const handleSubmit = () => actions.submitQueryValue(query, page);
-    const handleCancel = () => actions.clearData();
+    }
+
+    function handleSubmit() {
+        if (query.length !== 0) {
+            actions.submitQueryValue(query, page);
+        }
+    }
+
+    function handleCancel() {
+        actions.clearData();
+    }
 
     return (
         <Searchbar

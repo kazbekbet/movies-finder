@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IMovieSearchModule, IMovieSearchResults } from './models';
 import { PromiseStatuses } from '../../../common/enums/asyncActionStatuses';
-import {uniqBy} from 'lodash'
+import { uniqBy } from 'lodash';
 
 const initialState: IMovieSearchModule = {
     query: '',
+    lastQueryValue: '',
     status: PromiseStatuses.IDLE,
     page: 1,
     movies: null,
@@ -19,9 +20,10 @@ export const searchMoviesSlice = createSlice({
         setQueryValue: (state, action: PayloadAction<string>) => {
             state.query = action.payload;
         },
-        getSearchListPending: (state, action: PayloadAction<number>) => {
+        getSearchListPending: (state, action: PayloadAction<{ page: number; query: string }>) => {
             state.status = PromiseStatuses.PENDING;
-            state.page = action.payload;
+            state.page = action.payload.page;
+            state.lastQueryValue = action.payload.query;
         },
         getSearchListFulfilled: (state, action: PayloadAction<IMovieSearchResults>) => {
             state.status = PromiseStatuses.FULFILLED;
@@ -46,7 +48,7 @@ export const searchMoviesSlice = createSlice({
         loadNewPageDataFulfilled: (state, action: PayloadAction<IMovieSearchResults>) => {
             if (state.movies?.results && action.payload.results) {
                 const mergedData = state.movies.results.concat(action.payload.results);
-                state.movies.results = uniqBy(mergedData, (movie) => movie.id);
+                state.movies.results = uniqBy(mergedData, movie => movie.id);
                 state.movies.page = state.page;
                 state.newPageLoadStatus = PromiseStatuses.FULFILLED;
             }
