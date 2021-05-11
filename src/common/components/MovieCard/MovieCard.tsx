@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
-import { Card, Paragraph, Title } from 'react-native-paper';
+import { Card, Chip, Paragraph, Title } from 'react-native-paper';
 import { textColorsConfig } from '../../theme/themeConfig';
 import { RippleEffect } from '../Ripple/RippleEffect';
 import { ApiConfig } from '../../api/config';
@@ -9,6 +9,8 @@ import { useActions } from '../../actionFactory/useActions';
 import { MovieInfoActions } from '../../../modules/MovieInfo/actions/actions';
 import { IMovieShortInfo } from '../../../modules/MoviesList/store/models';
 import { FavoritesMoviesActions } from '../../../modules/FavoritesMovies/actions/FavoritesMoviesActions';
+import { useAppSelector } from '../../../store/hooks';
+import { PromiseStatuses } from '../../enums/asyncActionStatuses';
 
 /**
  * Модель пропсов для компонента карточки фильма.
@@ -30,34 +32,72 @@ interface IOwnProps {
 
 /** Компонент карточки фильма в списке. */
 export const MovieCard: React.FC<IOwnProps> = props => {
-    const { title, description, posterPath, onPress, voteAverage, releaseDate, shortMovieInfo } = props;
-    const [showDialog, setShowDialog] = useState(false);
+    const { id, title, description, posterPath, onPress, voteAverage, releaseDate, shortMovieInfo } = props;
+    const { status, movies } = useAppSelector(state => state.favoritesMovies);
+
+    /** Локальный стор. */
+    const [showAddDialog, setShowAddDialog] = useState(false);
+    const [showRemoveDialog, setShowRemoveDialog] = useState(false);
+    const [isFavourite, setFavourite] = useState(false);
+
+    /** Экшены. */
     const actions = useActions(actions => actions.movieInfo) as MovieInfoActions;
     const favoritesActions = useActions(actions => actions.favoritesMovies) as FavoritesMoviesActions;
 
-    const isShown = (title && description) || (posterPath && title);
+    /** Эффект при маунте компонента. */
+    useEffect(() => {
+        if (checkMovieIsFavourite()) {
+            setFavourite(true);
+        } else setFavourite(false);
+    }, [movies]);
 
-    const setDescription = () => {
+    /** Проверка наличия фильма в списке избранных. */
+    function checkMovieIsFavourite() {
+        if (status === PromiseStatuses.FULFILLED && movies) {
+            return Boolean(movies.find(favourite => favourite.id === id));
+        }
+    }
+
+    /** Проверка и установка описания. */
+    function setDescription() {
         if (description) {
             if (description.length <= 140) return description;
             return `${description.slice(0, 120)}...`;
         }
         return 'Без описания';
-    };
+    }
+
+    async function handleAddToFavorites() {
+        await closeDialog();
+        await actions.setMovieToLocalStorage(shortMovieInfo);
+        await ToastAndroid.show('Фильм успешно добавлен в избранные', ToastAndroid.SHORT);
+        await favoritesActions.getFavoritesMovies();
+    }
+
+    async function handleRemoveFromFavourites() {
+        await closeDialog();
+        await actions.removeMovieFromLocalStorageById(id);
+        await ToastAndroid.show('Фильм успешно удален из избранного', ToastAndroid.SHORT);
+        await favoritesActions.getFavoritesMovies();
+    }
+
+    function openDialog() {
+        if (!isFavourite) {
+            setShowAddDialog(true);
+        } else setShowRemoveDialog(true);
+    }
+
+    function closeDialog() {
+        if (!isFavourite) {
+            setShowAddDialog(false);
+        } else setShowRemoveDialog(false);
+    }
+
+    const isShown = (title && description) || (posterPath && title);
 
     const setPoster = () => `${ApiConfig.POSTER_URL}${posterPath}`;
     const getVoteAverage = () => (voteAverage ? voteAverage : 'неизвестно');
     const getReleaseYear = () => (releaseDate && releaseDate.length > 4 ? releaseDate.slice(0, 4) : 'неизвестно');
-
-    const closeDialog = () => setShowDialog(false);
-    const openDialog = () => setShowDialog(true);
-
-    const handleAddToFavorites = async () => {
-        await actions.setMovieToLocalStorage(shortMovieInfo);
-        await closeDialog();
-        await ToastAndroid.show('Фильм успешно добавлен в избранные', ToastAndroid.SHORT);
-        await favoritesActions.getFavoritesMovies();
-    };
 
     return isShown ? (
         <>
@@ -72,15 +112,29 @@ export const MovieCard: React.FC<IOwnProps> = props => {
                                 <Paragraph style={styles.textProperties}>Год: {getReleaseYear()}</Paragraph>
                             </View>
                             <Paragraph style={styles.textDescription}>{setDescription()}</Paragraph>
+                            {isFavourite && (
+                                <View style={styles.favouriteChip}>
+                                    <Chip icon={'heart'}>В избранном</Chip>
+                                </View>
+                            )}
                         </Card.Content>
                     </View>
                 </RippleEffect>
             </Card>
             <SimpleDialog
-                isVisible={showDialog}
+                isVisible={showAddDialog}
                 title={'Добавить в избранное'}
                 description={'Вы уверены, что желаете добавить фильм в избранное?'}
                 onConfirm={handleAddToFavorites}
+                confirmText={'Подтвердить'}
+                onDismiss={closeDialog}
+                cancelText={'Отмена'}
+            />
+            <SimpleDialog
+                isVisible={showRemoveDialog}
+                title={'Удалить из избранного'}
+                description={'Вы уверены, что желаете удалить фильм из избранного?'}
+                onConfirm={handleRemoveFromFavourites}
                 confirmText={'Подтвердить'}
                 onDismiss={closeDialog}
                 cancelText={'Отмена'}
@@ -113,5 +167,9 @@ const styles = StyleSheet.create({
     },
     textProperties: {
         color: PROPERTIES,
+    },
+    favouriteChip: {
+        flexDirection: 'row',
+        marginTop: 8,
     },
 });

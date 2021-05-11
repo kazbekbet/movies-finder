@@ -10,20 +10,26 @@ import { useAppSelector } from '../../../store/hooks';
 import { useActions } from '../../../common/actionFactory/useActions';
 import { NavigationModel } from '../../../router/types';
 import { MovieListActions } from '../actions/actions';
+import { FavoritesMoviesActions } from '../../FavoritesMovies/actions/FavoritesMoviesActions';
 
 /** Модель свойств компонента. */
 interface IOwnProps extends NavigationModel {}
 
 /** Компонент списка фильмов. */
-const MoviesList: React.FC<IOwnProps> = ({ }) => {
+const MoviesList: React.FC<IOwnProps> = ({}) => {
     const { movies, status, page, sortBy } = useAppSelector(state => state.moviesList);
     const actions = useActions(actions => actions.moviesList) as MovieListActions;
+    const favoritesActions = useActions(actions => actions.favoritesMovies) as FavoritesMoviesActions;
 
     useEffect(() => {
         if (sortBy) {
             getMovieList(sortBy);
         } else getMovieList();
     }, [page]);
+
+    useEffect(() => {
+        favoritesActions.getFavoritesMovies();
+    }, []);
 
     /** Получение списка фильмов. */
     const getMovieList = async (sortBy: SortTypes = SortTypes.POPULARITY) => await actions.getMoviesList(sortBy, page);
@@ -36,7 +42,7 @@ const MoviesList: React.FC<IOwnProps> = ({ }) => {
     return (
         <>
             <ScrollView style={styles.container}>
-                {isPending(status) && <Spinner setDefaultPaddingTop/>}
+                {isPending(status) && <Spinner setDefaultPaddingTop />}
                 <MovieListContent movies={movies} status={status} />
                 {!isPending(status) && movies && (
                     <MovieListPagination

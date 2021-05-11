@@ -4,6 +4,8 @@ import { useActions } from '../../../../common/actionFactory/useActions';
 import { FavoritesMoviesActions } from '../../actions/FavoritesMoviesActions';
 import { SimpleDialog } from '../../../../common/components/Dialogs/SimpleDialog';
 import { useAppSelector } from '../../../../store/hooks';
+import { ToastAndroid } from 'react-native';
+import { isEmpty, isNull } from "lodash";
 
 /** Кнопки бара избранных фильмов. */
 export const FavoritesMoviesAppBarActions: React.FC = () => {
@@ -15,16 +17,17 @@ export const FavoritesMoviesAppBarActions: React.FC = () => {
     const handleCloseDialog = () => setShowDialog(false);
 
     const handlePress = async () => {
+        await handleCloseDialog();
         await actions.deleteAllData();
         await actions.getFavoritesMovies();
-        await handleCloseDialog();
+        await ToastAndroid.show('Список избранных очищен', ToastAndroid.SHORT);
     };
 
     return (
         <>
             <IconButton
                 icon='trash-can-outline'
-                disabled={!movies}
+                disabled={isEmpty(movies) || isNull(movies)}
                 color={'#fff'}
                 size={24}
                 onPress={handleShowDialog}

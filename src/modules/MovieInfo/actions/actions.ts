@@ -62,4 +62,15 @@ export class MovieInfoActions {
             this.commonActions.setError(ErrorsLocalization.REMOVE_SAVED_MOVIE);
         }
     };
+
+    public removeMovieFromLocalStorageById = async (id: number) => {
+        try {
+            await this.localStorage.removeItemFromArray<IMovieShortInfo>(
+                ELocalStorage.FAVOURITES_MOVIES,
+                storedMovie => storedMovie.id === id
+            );
+        } catch (e) {
+            this.commonActions.setError(ErrorsLocalization.REMOVE_SAVED_MOVIE);
+        }
+    };
 }

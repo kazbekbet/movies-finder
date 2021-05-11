@@ -8,6 +8,7 @@ import { MovieCard } from '../../../common/components/MovieCard/MovieCard';
 import { isFulfilled, isPending } from '../../../common/statusCheckers/asyncStatusCheckers';
 import { Spinner } from '../../../common/components/Spinner/Spinner';
 import { Paragraph } from 'react-native-paper';
+import { isEmpty, isNull } from 'lodash';
 import { RouterPaths } from '../../../router/routerPaths';
 
 /** Модель свойств компонента. */
@@ -30,10 +31,13 @@ export const FavoritesMovies: React.FC<IOwnProps> = ({ navigation }) => {
         });
     };
 
+    /** Проверяет, что список избранных фильмов пуст. */
+    const checkMoviesListIsEmpty = () => isEmpty(movies) || isNull(movies);
+
     return (
         <View style={styles.container}>
             {isPending(status) && <Spinner setDefaultPaddingTop />}
-            {!isPending(status) && !movies && (
+            {!isPending(status) && checkMoviesListIsEmpty() && (
                 <Paragraph style={styles.textContent}>Список избранных фильмов пуст</Paragraph>
             )}
             {isFulfilled(status) && movies && (

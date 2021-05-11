@@ -12,6 +12,7 @@ export class FavoritesMoviesActions {
     localStorage = new LocalStorage();
     private commonActions = new CommonActions(this.dispatch);
 
+    /** Получение списка избранных фильмов. */
     public getFavoritesMovies = async () => {
         try {
             this.dispatch(getFavoritesListPending());
