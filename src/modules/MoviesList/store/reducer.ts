@@ -38,6 +38,12 @@ export const moviesListSlice = createSlice({
         clearFetchedData: state => {
             state.movies = null;
         },
+        setDefaultState: state => {
+            state.status = initialState.status;
+            state.page = initialState.page;
+            state.sortBy = initialState.sortBy;
+            state.movies = initialState.movies;
+        },
     },
 });
 
@@ -47,5 +53,6 @@ export const {
     getListDataRejected,
     changePage,
     changeSort,
-    clearFetchedData
+    clearFetchedData,
+    setDefaultState
 } = moviesListSlice.actions;
