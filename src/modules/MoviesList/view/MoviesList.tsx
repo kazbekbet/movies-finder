@@ -13,13 +13,14 @@ import { MovieListActions } from '../actions/actions';
 import { FavoritesMoviesActions } from '../../FavoritesMovies/actions/FavoritesMoviesActions';
 
 /** Модель свойств компонента. */
-interface IOwnProps extends NavigationModel {}
+interface IOwnProps extends NavigationModel {
+}
 
 /** Компонент списка фильмов. */
 const MoviesList: React.FC<IOwnProps> = ({}) => {
     const { movies, status, page, sortBy } = useAppSelector(state => state.moviesList);
-    const actions = useActions(actions => actions.moviesList) as MovieListActions;
-    const favoritesActions = useActions(actions => actions.favoritesMovies) as FavoritesMoviesActions;
+    const actions = useActions(actions => actions.moviesList);
+    const favoritesActions = useActions(actions => actions.favoritesMovies);
 
     useEffect(() => {
         if (sortBy) {
@@ -59,8 +60,8 @@ const MoviesList: React.FC<IOwnProps> = ({}) => {
 /** Стили. */
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#efefef',
-    },
+        backgroundColor: '#efefef'
+    }
 });
 
 export default MoviesList;

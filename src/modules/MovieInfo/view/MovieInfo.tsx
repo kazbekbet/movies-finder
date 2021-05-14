@@ -14,18 +14,19 @@ import { MovieInfoAppBarActions } from './components/MovieInfoAppBarActions';
 import { isEmpty } from 'lodash';
 
 /** Модель свойств компонента. */
-interface IOwnProps extends NavigationModel {}
+interface IOwnProps extends NavigationModel {
+}
 
 /** Компонент детальной информации о фильме. */
 export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
     const { result, status } = useAppSelector(state => state.movieInfo);
-    const actions = useActions(actions => actions.movieInfo) as MovieInfoActions;
+    const actions = useActions(actions => actions.movieInfo);
 
     /** Специальные опции для AppBar. */
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => <MovieInfoAppBarHeader title={route.params?.title ?? 'Ошибка загрузки'} />,
-            headerRight: () => <MovieInfoAppBarActions />,
+            headerRight: () => <MovieInfoAppBarActions />
         });
     }, [navigation]);
 
@@ -79,20 +80,20 @@ const { HEADLINE, DESCRIPTION, PROPERTIES } = textColorsConfig.READ_CONTENT;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#f8f8f8',
+        backgroundColor: '#f8f8f8'
     },
     content: {
         marginHorizontal: 16,
-        marginVertical: 8,
+        marginVertical: 8
     },
     textDescription: {
-        color: DESCRIPTION,
+        color: DESCRIPTION
     },
     genresContainer: {
         flexDirection: 'row',
-        paddingVertical: 8,
+        paddingVertical: 8
     },
     chip: {
-        marginRight: 8,
-    },
+        marginRight: 8
+    }
 });

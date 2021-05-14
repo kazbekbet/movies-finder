@@ -12,12 +12,13 @@ import { isEmpty, isNull } from 'lodash';
 import { RouterPaths } from '../../../router/routerPaths';
 
 /** Модель свойств компонента. */
-interface IOwnProps extends NavigationModel {}
+interface IOwnProps extends NavigationModel {
+}
 
 /** Компонент списка избранных фильмов. */
 export const FavoritesMovies: React.FC<IOwnProps> = ({ navigation }) => {
     const { status, movies } = useAppSelector(state => state.favoritesMovies);
-    const actions = useActions(actions => actions.favoritesMovies) as FavoritesMoviesActions;
+    const actions = useActions(actions => actions.favoritesMovies);
 
     useEffect(() => {
         actions.getFavoritesMovies();
@@ -27,7 +28,7 @@ export const FavoritesMovies: React.FC<IOwnProps> = ({ navigation }) => {
     const handlePress = ({ id, title }: { id: number; title: string }) => {
         navigation.navigate(RouterPaths.MOVIE_INFO, {
             id,
-            title,
+            title
         });
     };
 
@@ -66,10 +67,10 @@ export const FavoritesMovies: React.FC<IOwnProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#efefef',
-        flex: 1,
+        flex: 1
     },
     textContent: {
         textAlign: 'center',
-        paddingTop: 16,
-    },
+        paddingTop: 16
+    }
 });

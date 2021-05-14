@@ -12,13 +12,14 @@ import { useActions } from '../../../common/actionFactory/useActions';
 import { SearchMoviesActions } from '../actions/actions';
 
 /** Модель свойств компонента. */
-interface IOwnProps extends NavigationModel {}
+interface IOwnProps extends NavigationModel {
+}
 
 export const SearchMovies: React.FC<IOwnProps> = React.memo(({ navigation }) => {
     const { query, lastQueryValue, status, movies, page, newPageLoadStatus } = useAppSelector(
         state => state.searchMovies
     );
-    const { changePage, loadNewPageData } = useActions(actions => actions.searchMovies) as SearchMoviesActions;
+    const { changePage, loadNewPageData } = useActions(actions => actions.searchMovies);
 
     useEffect(() => {
         if (query) {
@@ -30,7 +31,7 @@ export const SearchMovies: React.FC<IOwnProps> = React.memo(({ navigation }) => 
     const handlePress = ({ id, title }: { id: number; title: string }) => {
         navigation.navigate(RouterPaths.MOVIE_INFO, {
             id,
-            title,
+            title
         });
     };
 
@@ -88,11 +89,11 @@ export const SearchMovies: React.FC<IOwnProps> = React.memo(({ navigation }) => 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#efefef',
-        flex: 1,
+        flex: 1
     },
     textContent: {
         textAlign: 'center',
-        paddingTop: 16,
+        paddingTop: 16
     },
     results: {
         paddingVertical: 16,
@@ -100,6 +101,6 @@ const styles = StyleSheet.create({
         elevation: 8,
         backgroundColor: '#fff',
         justifyContent: 'space-between',
-        flexDirection: 'row',
-    },
+        flexDirection: 'row'
+    }
 });
