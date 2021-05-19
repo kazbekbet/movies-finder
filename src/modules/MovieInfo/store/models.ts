@@ -4,6 +4,8 @@ import { IMovieShortInfo } from '../../MoviesList/store/models';
 export interface IMovieInfoModule {
     status: PromiseStatuses;
     result: IMovieInfoResult | null;
+    trailer: IMovieTrailerInfo | null;
+    trailerStatus: PromiseStatuses;
 }
 
 export interface IMovieInfoResult extends IMovieShortInfo {
@@ -38,4 +40,15 @@ export interface ISpokenLanguages {
 interface IMovieGenres {
     id: number;
     name: string;
+}
+
+export interface IMovieTrailerInfo {
+    id: number;
+    results: [
+        {
+            id: string;
+            key: string;
+            site: string;
+        }
+    ];
 }

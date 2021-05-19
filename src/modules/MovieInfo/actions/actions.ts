@@ -1,7 +1,15 @@
 import { AppDispatch } from '../../../store/rootReducer';
 import { MovieInfoServices } from '../services/services';
 import { CommonActions } from '../../../common/store/actions';
-import { clearMovieInfoData, getMovieInfoFulfilled, getMovieInfoPending, getMovieInfoRejected } from '../store/reducer';
+import {
+    clearMovieInfoData,
+    getMovieInfoFulfilled,
+    getMovieInfoPending,
+    getMovieInfoRejected,
+    getMovieTrailerFulfilled,
+    getMovieTrailerPending,
+    getMovieTrailerRejected
+} from '../store/reducer';
 import { IMovieInfoResult } from '../store/models';
 import { ELocalStorage } from '../../../common/enums/localStorage';
 import { ErrorsLocalization } from '../../../common/enums/errorsLocalization';
@@ -10,7 +18,8 @@ import { IMovieShortInfo } from '../../MoviesList/store/models';
 import { LocalStorage } from '../../../common/localStorage/LocalStorage';
 
 export class MovieInfoActions {
-    constructor(private readonly services: MovieInfoServices, private readonly dispatch: AppDispatch) {}
+    constructor(private readonly services: MovieInfoServices, private readonly dispatch: AppDispatch) {
+    }
 
     private commonActions = new CommonActions(this.dispatch);
     private localStorage = new LocalStorage();
@@ -71,6 +80,17 @@ export class MovieInfoActions {
             );
         } catch (e) {
             this.commonActions.setError(ErrorsLocalization.REMOVE_SAVED_MOVIE);
+        }
+    };
+
+    /** Получение информации о трейлере. */
+    public getMovieTrailer = async (id: number) => {
+        try {
+            this.dispatch(getMovieTrailerPending());
+            const response = await this.services.getMovieTrailer(id);
+            this.dispatch(getMovieTrailerFulfilled(response.data));
+        } catch (e) {
+            this.dispatch(getMovieTrailerRejected());
         }
     };
 }

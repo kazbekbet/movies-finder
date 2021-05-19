@@ -19,7 +19,7 @@ interface IOwnProps extends NavigationModel {}
 
 /** Компонент детальной информации о фильме. */
 export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
-    const { result, status } = useAppSelector(state => state.movieInfo);
+    const { result, status, trailer, trailerStatus } = useAppSelector(state => state.movieInfo);
     const actions = useActions(actions => actions.movieInfo);
     const utils = new MovieInfoUtils();
 
@@ -35,6 +35,7 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
     useEffect(() => {
         if (route.params?.id) {
             actions.getMovieInfo(route.params.id);
+            actions.getMovieTrailer(route.params.id);
         }
 
         return () => actions.clearMovieInfoData();
@@ -51,7 +52,7 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
                 <FetchedDataChecker show={Boolean(!isPending(status) && result)}>
                     {result && (
                         <>
-                            <Card.Cover source={{ uri: posterPath }} />
+                            {posterPath && <Card.Cover source={{ uri: posterPath }} />}
                             <View style={styles.content}>
                                 <Title>{result.title}</Title>
                                 {!isEmpty(result.tagline) && <Caption>{result.tagline}</Caption>}
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
     },
     textDescription: {
         color: DESCRIPTION,
-        paddingBottom: 8
+        paddingBottom: 8,
     },
     genresContainer: {
         flexDirection: 'row',

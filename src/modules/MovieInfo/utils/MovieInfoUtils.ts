@@ -1,8 +1,13 @@
-import { IMovieInfoResult, ISpokenLanguages } from '../store/models';
+import { IMovieInfoResult, IMovieTrailerInfo, ISpokenLanguages } from '../store/models';
 import { IMovieShortInfo } from '../../MoviesList/store/models';
 import { ApiConfig } from '../../../common/api/config';
-import { getMovieReleaseYear, getMovieStatusLocalization } from '../../../common/utils/commonUtils';
-import { isEmpty } from 'lodash';
+import {
+    getCorrectEndingWord,
+    getMovieReleaseYear,
+    getMovieStatusLocalization,
+    usdFormatter,
+} from '../../../common/utils/commonUtils';
+import { isEmpty, isUndefined } from 'lodash';
 
 /** Класс утилит карточки фильма. */
 export class MovieInfoUtils {
@@ -40,15 +45,37 @@ export class MovieInfoUtils {
             return 'неизвестно';
         };
 
+        const getPopularityPhrase = () => {
+            const points = movie.popularity.toFixed(0);
+            const endingWord = getCorrectEndingWord({
+                value: points,
+                one: 'очко',
+                two_four: 'очка',
+                five_nine: 'очков',
+            });
+
+            return `${points} ${endingWord}`;
+        };
+
         return [
             { label: 'Год выпуска', value: getMovieReleaseYear(movie.release_date) },
-            { label: 'Кассовые сборы', value: checkForNull(movie.revenue, `${movie.revenue}`) },
+            { label: 'Кассовые сборы', value: checkForNull(movie.revenue, usdFormatter(movie.revenue)) },
             { label: 'Длительность', value: checkForNull(movie.runtime, `${movie.runtime} мин.`) },
             { label: 'Средняя оценка', value: checkForNull(movie.vote_average, movie.vote_average) },
             { label: 'Всего голосов', value: checkForNull(movie.vote_count, movie.vote_count) },
-            { label: 'Популярность', value: checkForNull(movie.popularity, `${movie.popularity.toFixed(0)} очков`) },
+            { label: 'Популярность', value: checkForNull(movie.popularity, getPopularityPhrase()) },
             { label: 'Статус', value: checkForNull(movie.status, getMovieStatusLocalization(movie.status)) },
             { label: 'Озвучка', value: getLanguages(movie.spoken_languages) },
         ];
+    };
+
+    /** Ищет и возвращает YouTube ключ. */
+    public getYouTubeKey = (trailer: IMovieTrailerInfo) => {
+        if (!isEmpty(trailer.results)) {
+            const youtubeKey = trailer.results.findIndex(item => item.site === 'YouTube');
+            if (!isUndefined(youtubeKey)) {
+                return trailer.results[youtubeKey].key;
+            }
+        }
     };
 }
