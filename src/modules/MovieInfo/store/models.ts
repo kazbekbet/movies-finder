@@ -30,7 +30,7 @@ interface IProductionCountries {
     name: string;
 }
 
-interface ISpokenLanguages {
+export interface ISpokenLanguages {
     english_name: string;
     name: string;
 }

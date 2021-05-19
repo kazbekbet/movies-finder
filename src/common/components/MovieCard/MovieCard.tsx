@@ -11,6 +11,7 @@ import { IMovieShortInfo } from '../../../modules/MoviesList/store/models';
 import { FavoritesMoviesActions } from '../../../modules/FavoritesMovies/actions/FavoritesMoviesActions';
 import { useAppSelector } from '../../../store/hooks';
 import { PromiseStatuses } from '../../enums/asyncActionStatuses';
+import { getMovieReleaseYear } from '../../utils/commonUtils';
 
 /**
  * Модель пропсов для компонента карточки фильма.
@@ -97,7 +98,6 @@ export const MovieCard: React.FC<IOwnProps> = props => {
 
     const setPoster = () => `${ApiConfig.POSTER_URL}${posterPath}`;
     const getVoteAverage = () => (voteAverage ? voteAverage : 'неизвестно');
-    const getReleaseYear = () => (releaseDate && releaseDate.length > 4 ? releaseDate.slice(0, 4) : 'неизвестно');
 
     return isShown ? (
         <>
@@ -109,7 +109,9 @@ export const MovieCard: React.FC<IOwnProps> = props => {
                             {title && <Title style={styles.textTitle}>{title}</Title>}
                             <View style={styles.properties}>
                                 <Paragraph style={styles.textProperties}>Оценка: {getVoteAverage()} &ndash; </Paragraph>
-                                <Paragraph style={styles.textProperties}>Год: {getReleaseYear()}</Paragraph>
+                                <Paragraph style={styles.textProperties}>
+                                    Год: {getMovieReleaseYear(releaseDate)}
+                                </Paragraph>
                             </View>
                             <Paragraph style={styles.textDescription}>{setDescription()}</Paragraph>
                             {isFavourite && (

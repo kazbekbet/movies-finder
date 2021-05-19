@@ -2,19 +2,17 @@ import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { SortTypes } from '../../../common/enums/sortTypes';
 import { isPending } from '../../../common/statusCheckers/asyncStatusCheckers';
-import { Spinner } from '../../../common/components/Spinner/Spinner';
 import { MovieListContent } from './components/MovieListContent';
 import { MovieListPagination } from './components/MovieListPagination';
 import { ChangePageTypes } from '../actions/types';
 import { useAppSelector } from '../../../store/hooks';
 import { useActions } from '../../../common/actionFactory/useActions';
 import { NavigationModel } from '../../../router/types';
-import { MovieListActions } from '../actions/actions';
-import { FavoritesMoviesActions } from '../../FavoritesMovies/actions/FavoritesMoviesActions';
+import { LoadingSpinner } from '../../../common/components/Spinner/LoadingSpinner';
+import { FetchedDataChecker } from '../../../common/statusCheckers/FetchedDataChecker';
 
 /** Модель свойств компонента. */
-interface IOwnProps extends NavigationModel {
-}
+interface IOwnProps extends NavigationModel {}
 
 /** Компонент списка фильмов. */
 const MoviesList: React.FC<IOwnProps> = ({}) => {
@@ -41,27 +39,29 @@ const MoviesList: React.FC<IOwnProps> = ({}) => {
     };
 
     return (
-        <>
-            <ScrollView style={styles.container}>
-                {isPending(status) && <Spinner setDefaultPaddingTop />}
+        <ScrollView style={styles.container}>
+            <LoadingSpinner status={status} />
+
+            <FetchedDataChecker show={Boolean(!isPending(status) && movies?.results)}>
                 <MovieListContent movies={movies} status={status} />
-                {!isPending(status) && movies && (
-                    <MovieListPagination
-                        currentPage={page}
-                        onOpenNextPage={handleChangePage.bind(null, ChangePageTypes.INCREMENT)}
-                        onOpenPreviousPage={handleChangePage.bind(null, ChangePageTypes.DECREMENT)}
-                    />
-                )}
-            </ScrollView>
-        </>
+            </FetchedDataChecker>
+
+            <FetchedDataChecker show={Boolean(!isPending(status) && movies)}>
+                <MovieListPagination
+                    currentPage={page}
+                    onOpenNextPage={handleChangePage.bind(null, ChangePageTypes.INCREMENT)}
+                    onOpenPreviousPage={handleChangePage.bind(null, ChangePageTypes.DECREMENT)}
+                />
+            </FetchedDataChecker>
+        </ScrollView>
     );
 };
 
 /** Стили. */
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#efefef'
-    }
+        backgroundColor: '#efefef',
+    },
 });
 
 export default MoviesList;
