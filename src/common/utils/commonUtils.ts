@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash';
 import { IEndingWordConfig } from '../models/additional';
 
 export const getMovieReleaseYear = (releaseDate: string) => {
-    if (releaseDate.length > 4) {
+    if (releaseDate && releaseDate.length > 4) {
         return releaseDate.slice(0, 4);
     }
     return 'неизвестно';

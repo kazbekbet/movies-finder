@@ -5,6 +5,7 @@ import { themeConfig } from '../common/theme/themeConfig';
 import { RouterPaths } from './routerPaths';
 import { MovieInfo } from '../modules/MovieInfo/view/MovieInfo';
 import { MainTabRoutes } from './MainTabRoutes';
+import { stackScreensList } from './routerConfig';
 
 const Stack = createStackNavigator();
 
@@ -20,8 +21,9 @@ export const Router: React.FC = () => {
                     headerTintColor: '#fff',
                 }}
             >
-                <Stack.Screen name={RouterPaths.DRAWER} component={MainTabRoutes} />
-                <Stack.Screen name={RouterPaths.MOVIE_INFO} component={MovieInfo} />
+                {stackScreensList.map(item => (
+                    <Stack.Screen key={item.count} name={item.name} component={item.component} />
+                ))}
             </Stack.Navigator>
         </NavigationContainer>
     );

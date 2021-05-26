@@ -9,12 +9,15 @@ import { NavigationModel } from '../../../router/types';
 import { Caption } from 'react-native-paper';
 import { isEmpty } from 'lodash';
 import { useActions } from '../../../common/actionFactory/useActions';
-import { SearchMoviesActions } from '../actions/actions';
+import { LoadingSpinner } from '../../../common/components/Spinner/LoadingSpinner';
 
 /** Модель свойств компонента. */
 interface IOwnProps extends NavigationModel {
 }
 
+/**
+ * Компонент поиска фильмов.
+ * */
 export const SearchMovies: React.FC<IOwnProps> = React.memo(({ navigation }) => {
     const { query, lastQueryValue, status, movies, page, newPageLoadStatus } = useAppSelector(
         state => state.searchMovies
@@ -22,9 +25,7 @@ export const SearchMovies: React.FC<IOwnProps> = React.memo(({ navigation }) => 
     const { changePage, loadNewPageData } = useActions(actions => actions.searchMovies);
 
     useEffect(() => {
-        if (query) {
-            loadNewPageData(query, page);
-        }
+        if (query) loadNewPageData(query, page);
     }, [page]);
 
     /** Переход к детальной информации о фильме. */
@@ -44,7 +45,7 @@ export const SearchMovies: React.FC<IOwnProps> = React.memo(({ navigation }) => 
 
     return (
         <View style={styles.container}>
-            {isPending(status) && <Spinner setDefaultPaddingTop />}
+            <LoadingSpinner status={status} />
 
             {isIdle(status) && !movies && (
                 <Caption style={styles.textContent}>Введите название фильма в поле выше.</Caption>
