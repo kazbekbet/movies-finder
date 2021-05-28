@@ -69,6 +69,7 @@ export class MovieInfoUtils {
         };
 
         return [
+            { label: 'Название', value: checkForNull(movie.original_title, movie.original_title) },
             { label: 'Год выпуска', value: getMovieReleaseYear(movie.release_date) },
             { label: 'Кассовые сборы', value: checkForNull(movie.revenue, getRevenueString()) },
             { label: 'Длительность', value: checkForNull(movie.runtime, `${movie.runtime} мин.`) },

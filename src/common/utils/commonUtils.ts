@@ -28,42 +28,45 @@ export const getMovieStatusLocalization = (status: string) => {
     }
 };
 
-/** Форматирует в формат долларов. */
-export const usdFormatter = (value: number) =>
-    numbro(value)
-        .formatCurrency({
-            thousandSeparated: true,
-            spaceSeparated: true,
-        })
-        .split(',')
-        .join(' ');
-
-/** Форматирует в формат рублей. */
-export const rubFormatter = (value: number) => {
+/** Приводит формат суммы к общему виду. */
+const setCurrencyFormat = (value: number): { symbol: string; round: number } => {
     const thousand = 1000;
     const million = 1000000;
     const billion = 1000000000;
 
-    const setFormat = () => {
-        if (value >= thousand && value < million) {
-            return { symbol: 'тыс. руб.', round: thousand };
-        }
-        if (value >= million && value < billion) {
-            return { symbol: 'млн. руб.', round: million };
-        }
-        if (value >= billion) {
-            return { symbol: 'млрд. руб.', round: billion };
-        }
-        return { symbol: 'руб.', round: 1 };
-    };
+    if (value >= thousand && value < million) {
+        return { symbol: 'тыс.', round: thousand };
+    }
+    if (value >= million && value < billion) {
+        return { symbol: 'млн.', round: million };
+    }
+    if (value >= billion) {
+        return { symbol: 'млрд.', round: billion };
+    }
+    return { symbol: '', round: 1 };
+};
 
-    const config = setFormat();
+/** Форматирует в формат долларов. */
+export const usdFormatter = (value: number) => {
+    return numbro(value)
+        .formatCurrency({
+            average: true,
+            mantissa: 1,
+            spaceSeparated: true,
+        })
+        .split(',')
+        .join(' ');
+};
+
+/** Форматирует в формат рублей. */
+export const rubFormatter = (value: number) => {
+    const config = setCurrencyFormat(value);
 
     return numbro(value)
         .formatCurrency({
             mantissa: 1,
             optionalMantissa: true,
-            currencySymbol: config.symbol,
+            currencySymbol: `${config.symbol} руб.`,
             thousandSeparated: true,
             spaceSeparatedCurrency: true,
             currencyPosition: 'postfix',

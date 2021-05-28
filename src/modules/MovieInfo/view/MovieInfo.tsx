@@ -3,7 +3,7 @@ import { NavigationModel } from '../../../router/types';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { MovieInfoAppBarHeader } from './components/MovieInfoAppBarHeader';
 import { useActions } from '../../../common/actionFactory/useActions';
-import { isFulfilled, isPending } from '../../../common/statusCheckers/asyncStatusCheckers';
+import { isPending } from '../../../common/statusCheckers/asyncStatusCheckers';
 import { useAppSelector } from '../../../store/hooks';
 import { Caption, Card, Chip, Divider, Paragraph, Title } from 'react-native-paper';
 import { textColorsConfig } from '../../../common/theme/themeConfig';
@@ -13,16 +13,13 @@ import { LoadingSpinner } from '../../../common/components/Spinner/LoadingSpinne
 import { FetchedDataChecker } from '../../../common/statusCheckers/FetchedDataChecker';
 import { MovieInfoUtils } from '../utils/MovieInfoUtils';
 import { MovieInfoTable } from './components/MovieInfoTable';
-import { IMovieTrailerInfo } from '../store/models';
-import { MovieInfoTrailer } from './components/MovieInfoTrailer';
 
 /** Модель свойств компонента. */
-interface IOwnProps extends NavigationModel {
-}
+interface IOwnProps extends NavigationModel {}
 
 /** Компонент детальной информации о фильме. */
 export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
-    const { result, status, trailer, trailerStatus } = useAppSelector(state => state.movieInfo);
+    const { result, status } = useAppSelector(state => state.movieInfo);
     const actions = useActions(actions => actions.movieInfo);
     const utils = new MovieInfoUtils();
 
@@ -30,7 +27,7 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => <MovieInfoAppBarHeader title={route.params?.title ?? 'Ошибка загрузки'} />,
-            headerRight: () => <MovieInfoAppBarActions />
+            headerRight: () => <MovieInfoAppBarActions />,
         });
     }, [navigation]);
 
@@ -89,21 +86,21 @@ const { DESCRIPTION } = textColorsConfig.READ_CONTENT;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#f8f8f8'
+        backgroundColor: '#f8f8f8',
     },
     content: {
         marginHorizontal: 16,
-        marginVertical: 8
+        marginVertical: 8,
     },
     textDescription: {
         color: DESCRIPTION,
-        paddingBottom: 8
+        paddingBottom: 8,
     },
     genresContainer: {
         flexDirection: 'row',
-        paddingVertical: 8
+        paddingVertical: 8,
     },
     chip: {
-        marginRight: 8
-    }
+        marginRight: 8,
+    },
 });

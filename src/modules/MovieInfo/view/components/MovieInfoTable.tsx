@@ -5,8 +5,6 @@ import { Paragraph, Subheading } from 'react-native-paper';
 import { MovieInfoUtils } from '../../utils/MovieInfoUtils';
 import { textColorsConfig } from '../../../../common/theme/themeConfig';
 import { useAppSelector } from '../../../../store/hooks';
-import { isFulfilled } from '../../../../common/statusCheckers/asyncStatusCheckers';
-import { CurrencyTypes } from '../../../../common/enums/currency';
 
 interface IOwnProps {
     movie: IMovieInfoResult;
