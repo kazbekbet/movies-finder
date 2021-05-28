@@ -4,6 +4,9 @@ import { StyleSheet, View } from 'react-native';
 import { Paragraph, Subheading } from 'react-native-paper';
 import { MovieInfoUtils } from '../../utils/MovieInfoUtils';
 import { textColorsConfig } from '../../../../common/theme/themeConfig';
+import { useAppSelector } from '../../../../store/hooks';
+import { isFulfilled } from '../../../../common/statusCheckers/asyncStatusCheckers';
+import { CurrencyTypes } from '../../../../common/enums/currency';
 
 interface IOwnProps {
     movie: IMovieInfoResult;
@@ -11,8 +14,9 @@ interface IOwnProps {
 
 /** Компонент подробной информации о фильме. */
 export const MovieInfoTable: React.FC<IOwnProps> = ({ movie }) => {
+    const { currencyResult } = useAppSelector(state => state.common);
     const { getMovieInfoTableConfig } = new MovieInfoUtils();
-    const tableInfo = getMovieInfoTableConfig(movie);
+    const tableInfo = getMovieInfoTableConfig(movie, currencyResult);
 
     return (
         <View style={styles.container}>

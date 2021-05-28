@@ -75,7 +75,7 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
                                 </Paragraph>
                                 <Divider />
                                 <MovieInfoTable movie={result} />
-                                <MovieInfoTrailer utils={utils} />
+                                {/*<MovieInfoTrailer utils={utils} />*/}
                             </View>
                         </>
                     )}

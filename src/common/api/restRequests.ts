@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ApiConfig } from './config';
+import { CurrencyTypes } from '../enums/currency';
 
 interface IGetRequest<T> {
     url: string;
@@ -15,5 +16,12 @@ export const GET = <T>(request: IGetRequest<T>) => {
             language: ApiConfig.LANGUAGE,
             ...request.params,
         },
+    });
+};
+
+export const GET_CURRENCY_RATE = (currency: CurrencyTypes) => {
+    return axios({
+        method: 'get',
+        url: `https://v6.exchangerate-api.com/v6/534045ffbfd93c62601b33b9/latest/${currency}`,
     });
 };

@@ -4,10 +4,13 @@ import { ApiConfig } from '../../../common/api/config';
 import {
     getCorrectEndingWord,
     getMovieReleaseYear,
-    getMovieStatusLocalization,
+    getMovieStatusLocalization, rubFormatter,
     usdFormatter,
 } from '../../../common/utils/commonUtils';
 import { isEmpty, isUndefined } from 'lodash';
+import { CurrencyModel } from '../../../common/store/model';
+import { IMovieInfoTable } from '../../../common/models/additional';
+import { CurrencyTypes } from '../../../common/enums/currency';
 
 /** Класс утилит карточки фильма. */
 export class MovieInfoUtils {
@@ -35,7 +38,7 @@ export class MovieInfoUtils {
     public getMoviePoster = (path: string | undefined) => path && `${ApiConfig.POSTER_URL}${path}`;
 
     /** Получение конфига таблицы. */
-    public getMovieInfoTableConfig = (movie: IMovieInfoResult): { label: string; value: string | number }[] => {
+    public getMovieInfoTableConfig = (movie: IMovieInfoResult, currency: CurrencyModel | null): IMovieInfoTable[] => {
         const checkForNull = <T, R>(value: T, useValue: R) => (value ? useValue : 'неизвестно');
 
         const getLanguages = (list: ISpokenLanguages[]) => {
@@ -57,9 +60,17 @@ export class MovieInfoUtils {
             return `${points} ${endingWord}`;
         };
 
+        const getRevenueString = () => {
+            if (currency) {
+                const revenueRUB = movie.revenue * currency.conversion_rates[CurrencyTypes.RUB];
+                return `${usdFormatter(movie.revenue)} (${rubFormatter(revenueRUB)})`;
+            }
+            return usdFormatter(movie.revenue);
+        };
+
         return [
             { label: 'Год выпуска', value: getMovieReleaseYear(movie.release_date) },
-            { label: 'Кассовые сборы', value: checkForNull(movie.revenue, usdFormatter(movie.revenue)) },
+            { label: 'Кассовые сборы', value: checkForNull(movie.revenue, getRevenueString()) },
             { label: 'Длительность', value: checkForNull(movie.runtime, `${movie.runtime} мин.`) },
             { label: 'Средняя оценка', value: checkForNull(movie.vote_average, movie.vote_average) },
             { label: 'Всего голосов', value: checkForNull(movie.vote_count, movie.vote_count) },

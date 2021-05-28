@@ -4,3 +4,8 @@ export interface IEndingWordConfig {
     two_four: string;
     five_nine: string;
 }
+
+export interface IMovieInfoTable {
+    label: string;
+    value: string | number;
+}
