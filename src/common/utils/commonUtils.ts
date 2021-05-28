@@ -35,7 +35,8 @@ export const usdFormatter = (value: number) =>
             thousandSeparated: true,
             spaceSeparated: true,
         })
-        .replaceAll(',', ' ');
+        .split(',')
+        .join(' ');
 
 /** Форматирует в формат рублей. */
 export const rubFormatter = (value: number) => {
@@ -69,7 +70,8 @@ export const rubFormatter = (value: number) => {
             spaceSeparated: true,
             roundingFunction: num => num / config.round,
         })
-        .replaceAll(',', ' ');
+        .split(',')
+        .join(' ');
 };
 
 export const getCorrectEndingWord = ({ value, one, two_four, five_nine }: IEndingWordConfig): string => {
