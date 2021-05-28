@@ -39,15 +39,19 @@ export const usdFormatter = (value: number) =>
 
 /** Форматирует в формат рублей. */
 export const rubFormatter = (value: number) => {
+    const thousand = 1000;
+    const million = 1000000;
+    const billion = 1000000000;
+
     const setFormat = () => {
-        if (value >= 1000 && value < 1000000) {
-            return { symbol: 'тыс. руб.', round: 1000 };
+        if (value >= thousand && value < million) {
+            return { symbol: 'тыс. руб.', round: thousand };
         }
-        if (value >= 1000000 && value < 1000000000) {
-            return { symbol: 'млн. руб.', round: 1000000 };
+        if (value >= million && value < billion) {
+            return { symbol: 'млн. руб.', round: million };
         }
-        if (value >= 1000000000) {
-            return { symbol: 'млрд. руб.', round: 1000000000 };
+        if (value >= billion) {
+            return { symbol: 'млрд. руб.', round: billion };
         }
         return { symbol: 'руб.', round: 1 };
     };
