@@ -1,6 +1,6 @@
 import { RouterPaths } from '../../router/routerPaths';
 import { CurrencyTypes } from '../enums/currency';
-import { PromiseStatuses } from "../enums/asyncActionStatuses";
+import { PromiseStatuses } from '../enums/asyncActionStatuses';
 
 export interface CommonReducer {
     isError: boolean;
@@ -8,6 +8,8 @@ export interface CommonReducer {
     currentRoute: RouterPaths | null;
     currencyStatus: PromiseStatuses;
     currencyResult: CurrencyModel | null;
+    genresStatus: PromiseStatuses,
+    genres: Genre[] | null;
 }
 
 export interface CurrencyModel {
@@ -17,4 +19,13 @@ export interface CurrencyModel {
         [CurrencyTypes.EUR]: number;
         [CurrencyTypes.RUB]: number;
     };
+}
+
+export interface GenreResponse {
+    genres: Genre[];
+}
+
+export interface Genre {
+    id: number;
+    name: string;
 }

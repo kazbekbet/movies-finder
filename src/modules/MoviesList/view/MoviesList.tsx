@@ -15,7 +15,7 @@ import { FetchedDataChecker } from '../../../common/statusCheckers/FetchedDataCh
 interface IOwnProps extends NavigationModel {}
 
 /** Компонент списка фильмов. */
-const MoviesList: React.FC<IOwnProps> = ({}) => {
+export const MoviesList: React.FC<IOwnProps> = ({}) => {
     const { movies, status, page, sortBy } = useAppSelector(state => state.moviesList);
     const actions = useActions(actions => actions.moviesList);
     const favoritesActions = useActions(actions => actions.favoritesMovies);
@@ -63,5 +63,3 @@ const styles = StyleSheet.create({
         backgroundColor: '#efefef',
     },
 });
-
-export default MoviesList;

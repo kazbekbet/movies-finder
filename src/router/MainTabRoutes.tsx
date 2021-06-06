@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import MoviesList from '../modules/MoviesList/view/MoviesList';
+import { MoviesList } from '../modules/MoviesList/view/MoviesList';
 import { themeConfig } from '../common/theme/themeConfig';
 import { NavigationModel } from './types';
 import { BottomBarRouterPaths } from './routerPaths';
@@ -8,6 +8,7 @@ import { FavoritesMovies } from '../modules/FavoritesMovies/view/FavoritesMovies
 import { AppBarFactory } from '../common/appBar/AppBarFactory';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { SearchMovies } from '../modules/SearchMovies/view/SearchMovies';
+import { ForEvening } from "../modules/ForEvening/view/ForEvening";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -32,6 +33,11 @@ export const MainTabRoutes: React.FC<IOwnProps> = ({ route, navigation }) => {
                 name={BottomBarRouterPaths.MOVIES_LIST}
                 options={{ tabBarIcon: 'movie-open-outline' }}
                 component={MoviesList}
+            />
+            <Tab.Screen
+                name={BottomBarRouterPaths.FOR_EVENING}
+                options={{ tabBarIcon: 'weather-night' }}
+                component={ForEvening}
             />
             <Tab.Screen
                 name={BottomBarRouterPaths.SEARCH_MOVIES}

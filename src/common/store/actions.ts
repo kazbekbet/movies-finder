@@ -4,6 +4,9 @@ import {
     getCurrencyFulfilled,
     getCurrencyPending,
     getCurrencyRejected,
+    getGenresFulfilled,
+    getGenresPending,
+    getGenresRejected,
     setCurrentRoute,
     setError,
 } from './commonReducer';
@@ -40,6 +43,18 @@ export class CommonActions {
         } catch (e) {
             this.setError('Ошибка получения курса USD.');
             this.dispatch(getCurrencyRejected());
+        }
+    };
+
+    /** Получение всех жанров. */
+    public getGenres = async () => {
+        try {
+            this.dispatch(getGenresPending());
+            const response = await this.services.getGenres();
+            this.dispatch(getGenresFulfilled(response.data));
+        } catch (e) {
+            this.setError('Ошибка получения жанров.');
+            this.dispatch(getGenresRejected());
         }
     };
 }

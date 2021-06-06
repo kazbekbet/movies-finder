@@ -6,7 +6,9 @@ import { StackNavigationOptions } from '@react-navigation/stack';
 import { FavoritesMoviesAppBarHeader } from '../../modules/FavoritesMovies/view/components/FavoritesMoviesAppBarHeader';
 import { SearchMoviesAppBarHeader } from '../../modules/SearchMovies/view/components/SearchMoviesAppBarHeader';
 import { FavoritesMoviesAppBarActions } from "../../modules/FavoritesMovies/view/components/FavoritesMoviesAppBarActions";
+import { ForEveningAppBarHeader } from "../../modules/ForEvening/view/components/ForEveningAppBarHeader";
 
+/** Фабрика, возвращающая верхний бар для контейнерного компонента. */
 export const AppBarFactory = (route: string): Partial<StackNavigationOptions> => {
     switch (route) {
         case BottomBarRouterPaths.MOVIES_LIST:
@@ -14,10 +16,15 @@ export const AppBarFactory = (route: string): Partial<StackNavigationOptions> =>
                 headerTitle: () => <MovieListAppBarHeader />,
                 headerRight: () => <MovieListAppBarActions />,
             };
+        case BottomBarRouterPaths.FOR_EVENING:
+            return {
+                headerTitle: () => <ForEveningAppBarHeader />,
+                headerRight: undefined
+            }
         case BottomBarRouterPaths.SEARCH_MOVIES:
             return {
                 headerTitle: () => <SearchMoviesAppBarHeader />,
-                headerRight: undefined,
+                headerRight: undefined
             };
         case BottomBarRouterPaths.FAVORITES_MOVIES:
             return {

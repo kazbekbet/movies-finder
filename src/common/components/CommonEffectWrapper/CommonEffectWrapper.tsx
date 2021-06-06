@@ -12,6 +12,7 @@ export const CommonEffectWrapper: React.FC<IOwnProps> = ({ children }) => {
 
     useEffect(() => {
         actions.getUSDCurrencyRate();
+        actions.getGenres();
     }, []);
 
     return <>{children}</>;

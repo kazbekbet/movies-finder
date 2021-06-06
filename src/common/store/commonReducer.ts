@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CommonReducer, CurrencyModel } from './model';
+import { CommonReducer, CurrencyModel, GenreResponse } from './model';
 import { RouterPaths } from '../../router/routerPaths';
 import { PromiseStatuses } from '../enums/asyncActionStatuses';
 
@@ -9,6 +9,8 @@ const initialState: CommonReducer = {
     currentRoute: null,
     currencyStatus: PromiseStatuses.IDLE,
     currencyResult: null,
+    genresStatus: PromiseStatuses.IDLE,
+    genres: null,
 };
 
 /** Редьюсер списка фильмов. */
@@ -38,6 +40,17 @@ export const commonSlice = createSlice({
             state.currencyStatus = PromiseStatuses.REJECTED;
             state.currencyResult = null;
         },
+        getGenresPending: state => {
+            state.genresStatus = PromiseStatuses.PENDING;
+        },
+        getGenresFulfilled: (state, action: PayloadAction<GenreResponse>) => {
+            state.genresStatus = PromiseStatuses.FULFILLED;
+            state.genres = action.payload.genres;
+        },
+        getGenresRejected: state => {
+            state.genresStatus = PromiseStatuses.REJECTED;
+            state.genres = null;
+        },
     },
 });
 
@@ -48,4 +61,7 @@ export const {
     getCurrencyPending,
     getCurrencyFulfilled,
     getCurrencyRejected,
+    getGenresPending,
+    getGenresFulfilled,
+    getGenresRejected
 } = commonSlice.actions;

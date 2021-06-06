@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { NavigationModel } from '../../../router/types';
 import { useActions } from '../../../common/actionFactory/useActions';
-import { FavoritesMoviesActions } from '../actions/FavoritesMoviesActions';
 import { useAppSelector } from '../../../store/hooks';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { MovieCard } from '../../../common/components/MovieCard/MovieCard';

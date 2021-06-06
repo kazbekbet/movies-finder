@@ -7,6 +7,7 @@ export enum RouterPaths {
 
 export enum BottomBarRouterPaths {
     MOVIES_LIST = 'Подборки',
+    FOR_EVENING = 'На вечер',
     SEARCH_MOVIES = 'Поиск',
     FAVORITES_MOVIES = 'Избранное',
 }

@@ -61,7 +61,7 @@ export class MovieInfoUtils {
         };
 
         const getRevenueString = () => {
-            if (currency) {
+            if (currency && currency.conversion_rates) {
                 const revenueRUB = movie.revenue * currency.conversion_rates[CurrencyTypes.RUB];
                 return `${usdFormatter(movie.revenue)} (${rubFormatter(revenueRUB)})`;
             }
