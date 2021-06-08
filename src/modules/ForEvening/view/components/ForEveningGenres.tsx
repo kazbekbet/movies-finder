@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppSelector } from '../../../../store/hooks';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Chip, Subheading } from 'react-native-paper';
 import { capitalize } from 'lodash';
 import { Genre } from '../../../../common/store/model';
@@ -21,7 +21,7 @@ export const ForEveningGenres: React.FC<IOwnProps> = ({ selectedGenres, setSelec
     }
 
     /** Обработчик изменения массива жанров. */
-    const handleSelectGenre = (genre: Genre) => {
+    const handleSelectGenre = (genre: Genre) => () => {
         const foundGenre = findGenre(genre.id);
 
         if (foundGenre) {
@@ -35,19 +35,19 @@ export const ForEveningGenres: React.FC<IOwnProps> = ({ selectedGenres, setSelec
     return (
         <View>
             <Subheading>Выберите подходящие жанры</Subheading>
-            <ScrollView style={styles.genresContainer} horizontal showsHorizontalScrollIndicator={false}>
+            <View style={styles.genresContainer}>
                 {genres &&
                     genres.map(genre => (
                         <Chip
                             selected={Boolean(findGenre(genre.id))}
                             style={styles.chip}
                             key={genre.id}
-                            onPress={handleSelectGenre.bind(null, genre)}
+                            onPress={handleSelectGenre(genre)}
                         >
                             {capitalize(genre.name)}
                         </Chip>
                     ))}
-            </ScrollView>
+            </View>
         </View>
     );
 };
@@ -56,9 +56,11 @@ export const ForEveningGenres: React.FC<IOwnProps> = ({ selectedGenres, setSelec
 const styles = StyleSheet.create({
     chip: {
         marginRight: 8,
+        marginVertical: 4,
     },
     genresContainer: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
         paddingVertical: 8,
     },
 });

@@ -4,6 +4,7 @@ import { commonSlice } from '../common/store/commonReducer';
 import { movieInfoSlice } from '../modules/MovieInfo/store/reducer';
 import { favoritesMoviesSlice } from '../modules/FavoritesMovies/store/reducer';
 import { searchMoviesSlice } from '../modules/SearchMovies/store/reducer';
+import { forEveningSlice } from '../modules/ForEvening/store/reducer';
 
 const rootReducer = combineReducers({
     common: commonSlice.reducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
     movieInfo: movieInfoSlice.reducer,
     favoritesMovies: favoritesMoviesSlice.reducer,
     searchMovies: searchMoviesSlice.reducer,
+    forEvening: forEveningSlice.reducer,
 });
 
 export const globalStore = configureStore({

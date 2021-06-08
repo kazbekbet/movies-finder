@@ -34,7 +34,7 @@ export const MoviesList: React.FC<IOwnProps> = ({}) => {
     const getMovieList = async (sortBy: SortTypes = SortTypes.POPULARITY) => await actions.getMoviesList(sortBy, page);
 
     /** Изменение страницы списка. */
-    const handleChangePage = (changeType: ChangePageTypes) => {
+    const handleChangePage = (changeType: ChangePageTypes) => () => {
         actions.changePage({ type: changeType, currentPage: page });
     };
 
@@ -49,8 +49,8 @@ export const MoviesList: React.FC<IOwnProps> = ({}) => {
             <FetchedDataChecker show={Boolean(!isPending(status) && movies)}>
                 <MovieListPagination
                     currentPage={page}
-                    onOpenNextPage={handleChangePage.bind(null, ChangePageTypes.INCREMENT)}
-                    onOpenPreviousPage={handleChangePage.bind(null, ChangePageTypes.DECREMENT)}
+                    onOpenNextPage={handleChangePage(ChangePageTypes.INCREMENT)}
+                    onOpenPreviousPage={handleChangePage(ChangePageTypes.DECREMENT)}
                 />
             </FetchedDataChecker>
         </ScrollView>

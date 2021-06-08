@@ -7,6 +7,8 @@ import { MovieInfoActions } from '../../modules/MovieInfo/actions/actions';
 import { FavoritesMoviesActions } from '../../modules/FavoritesMovies/actions/FavoritesMoviesActions';
 import { SearchMoviesActions } from '../../modules/SearchMovies/actions/actions';
 import { SearchMoviesServices } from '../../modules/SearchMovies/services/services';
+import { ForEveningServices } from "../../modules/ForEvening/services/services";
+import { ForEveningActions } from "../../modules/ForEvening/actions/actions";
 
 /** Фабрика экшенов. */
 export class ActionsFactory {
@@ -38,5 +40,11 @@ export class ActionsFactory {
     public get searchMovies() {
         const services = new SearchMoviesServices();
         return new SearchMoviesActions(services, this.dispatch);
+    }
+
+    /** Возвращает все экшены для компонента фильмов на вечер. */
+    public get forEvening() {
+        const services = new ForEveningServices();
+        return new ForEveningActions(services, this.dispatch)
     }
 }

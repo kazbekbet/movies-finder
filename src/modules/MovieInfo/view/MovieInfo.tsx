@@ -56,17 +56,13 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
                             <View style={styles.content}>
                                 <Title>{result.title}</Title>
                                 {!isEmpty(result.tagline) && <Caption>{result.tagline}</Caption>}
-                                <ScrollView
-                                    showsHorizontalScrollIndicator={false}
-                                    horizontal
-                                    style={styles.genresContainer}
-                                >
+                                <View style={styles.genresContainer}>
                                     {result.genres?.map(genre => (
                                         <Chip key={genre.id} style={styles.chip}>
                                             {capitalize(genre.name)}
                                         </Chip>
                                     ))}
-                                </ScrollView>
+                                </View>
                                 <Paragraph style={styles.textDescription}>
                                     {result.overview ?? 'Без описания'}
                                 </Paragraph>
@@ -98,9 +94,11 @@ const styles = StyleSheet.create({
     },
     genresContainer: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
         paddingVertical: 8,
     },
     chip: {
         marginRight: 8,
+        marginVertical: 4
     },
 });

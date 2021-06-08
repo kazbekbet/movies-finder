@@ -13,7 +13,7 @@ interface IOwnProps {
 export const MovieListContent: React.FC<IOwnProps> = ({ movies, status }) => {
     const navigation = useNavigation();
     /** Переход к детальной информации о фильме. */
-    const handlePress = ({ id, title }: { id: number; title: string }) => {
+    const handlePress = ({ id, title }: { id: number; title: string }) => () => {
         navigation.navigate(RouterPaths.MOVIE_INFO, {
             id,
             title,
@@ -25,7 +25,7 @@ export const MovieListContent: React.FC<IOwnProps> = ({ movies, status }) => {
             {movies?.results &&
                 movies.results.map(movie => (
                     <MovieCard
-                        onPress={handlePress.bind(null, { id: movie.id, title: movie.title })}
+                        onPress={handlePress({ id: movie.id, title: movie.title })}
                         shortMovieInfo={movie}
                         id={movie.id}
                         key={movie.id}

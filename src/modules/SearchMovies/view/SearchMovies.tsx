@@ -29,7 +29,7 @@ export const SearchMovies: React.FC<IOwnProps> = React.memo(({ navigation }) => 
     }, [page]);
 
     /** Переход к детальной информации о фильме. */
-    const handlePress = ({ id, title }: { id: number; title: string }) => {
+    const handlePress = ({ id, title }: { id: number; title: string }) => () => {
         navigation.navigate(RouterPaths.MOVIE_INFO, {
             id,
             title
@@ -74,7 +74,7 @@ export const SearchMovies: React.FC<IOwnProps> = React.memo(({ navigation }) => 
                                 id={movie.item.id}
                                 description={movie.item.overview}
                                 posterPath={movie.item.backdrop_path}
-                                onPress={handlePress.bind(null, { id: movie.item.id, title: movie.item.title })}
+                                onPress={handlePress({ id: movie.item.id, title: movie.item.title })}
                                 voteAverage={movie.item.vote_average}
                                 releaseDate={movie.item.release_date}
                             />

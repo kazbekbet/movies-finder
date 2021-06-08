@@ -49,7 +49,9 @@ export const MovieCard: React.FC<IOwnProps> = props => {
     useEffect(() => {
         if (checkMovieIsFavourite()) {
             setFavourite(true);
-        } else setFavourite(false);
+        } else {
+            setFavourite(false);
+        }
     }, [movies]);
 
     /** Проверка наличия фильма в списке избранных. */
@@ -59,7 +61,45 @@ export const MovieCard: React.FC<IOwnProps> = props => {
         }
     }
 
-    /** Проверка и установка описания. */
+    /** Обработчик добавления фильма в избранное. */
+    async function handleAddToFavorites() {
+        await closeDialog();
+        await actions.setMovieToLocalStorage(shortMovieInfo);
+        await ToastAndroid.show('Фильм успешно добавлен в избранные', ToastAndroid.SHORT);
+        await favoritesActions.getFavoritesMovies();
+    }
+
+    /** Обработчик удаления фильма из избранного. */
+    async function handleRemoveFromFavourites() {
+        await closeDialog();
+        await actions.removeMovieFromLocalStorageById(id);
+        await ToastAndroid.show('Фильм успешно удален из избранного', ToastAndroid.SHORT);
+        await favoritesActions.getFavoritesMovies();
+    }
+
+    /** Обработчик открытия диалога. */
+    function openDialog() {
+        if (!isFavourite) {
+            setShowAddDialog(true);
+        } else {
+            setShowRemoveDialog(true);
+        }
+    }
+
+    /** Обработчик закрытия диалога. */
+    function closeDialog() {
+        if (!isFavourite) {
+            setShowAddDialog(false);
+        } else {
+            setShowRemoveDialog(false);
+        }
+    }
+
+    /** Переменные для отображения карточки. */
+    const isMovieShown = (title && description) || (posterPath && title);
+    const moviePoster = `${ApiConfig.POSTER_URL}${posterPath}`;
+    const movieVoteAverage = voteAverage ? voteAverage : 'неизвестно';
+
     function setDescription() {
         if (description) {
             if (description.length <= 140) return description;
@@ -68,47 +108,16 @@ export const MovieCard: React.FC<IOwnProps> = props => {
         return 'Без описания';
     }
 
-    async function handleAddToFavorites() {
-        await closeDialog();
-        await actions.setMovieToLocalStorage(shortMovieInfo);
-        await ToastAndroid.show('Фильм успешно добавлен в избранные', ToastAndroid.SHORT);
-        await favoritesActions.getFavoritesMovies();
-    }
-
-    async function handleRemoveFromFavourites() {
-        await closeDialog();
-        await actions.removeMovieFromLocalStorageById(id);
-        await ToastAndroid.show('Фильм успешно удален из избранного', ToastAndroid.SHORT);
-        await favoritesActions.getFavoritesMovies();
-    }
-
-    function openDialog() {
-        if (!isFavourite) {
-            setShowAddDialog(true);
-        } else setShowRemoveDialog(true);
-    }
-
-    function closeDialog() {
-        if (!isFavourite) {
-            setShowAddDialog(false);
-        } else setShowRemoveDialog(false);
-    }
-
-    const isShown = (title && description) || (posterPath && title);
-
-    const setPoster = () => `${ApiConfig.POSTER_URL}${posterPath}`;
-    const getVoteAverage = () => (voteAverage ? voteAverage : 'неизвестно');
-
-    return isShown ? (
+    return isMovieShown ? (
         <>
             <Card style={styles.container} onPress={onPress}>
                 <RippleEffect onPress={onPress} onLongPress={openDialog}>
                     <View>
-                        {posterPath && <Card.Cover source={{ uri: setPoster() }} />}
+                        {posterPath && <Card.Cover source={{ uri: moviePoster }} />}
                         <Card.Content style={styles.content}>
                             {title && <Title style={styles.textTitle}>{title}</Title>}
                             <View style={styles.properties}>
-                                <Paragraph style={styles.textProperties}>Оценка: {getVoteAverage()} &ndash; </Paragraph>
+                                <Paragraph style={styles.textProperties}>Оценка: {movieVoteAverage} &ndash; </Paragraph>
                                 <Paragraph style={styles.textProperties}>
                                     Год: {getMovieReleaseYear(releaseDate)}
                                 </Paragraph>
