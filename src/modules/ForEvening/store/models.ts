@@ -1,9 +1,11 @@
-import { PromiseStatuses } from "../../../common/enums/asyncActionStatuses";
-import { IMovieListResponse } from "../../MoviesList/store/models";
+import { PromiseStatuses } from '../../../common/enums/asyncActionStatuses';
+import { IMovieListResponse, IMovieShortInfo } from '../../MoviesList/store/models';
 
 export interface ForEveningState {
-    status: PromiseStatuses,
+    status: PromiseStatuses;
     movies: IMovieListResponse | null;
+    historyStatus: PromiseStatuses;
+    history: IMovieShortInfo[] | null;
 }
 
 export interface ForEveningSearchRequest {

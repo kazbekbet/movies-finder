@@ -3,6 +3,7 @@ export enum RouterPaths {
     MOVIES_LIST = 'MOVIES_LIST',
     FAVORITES_MOVIES = 'FAVORITES_MOVIES',
     MOVIE_INFO = 'MOVIE_INFO',
+    FOR_EVENING_HISTORY = 'FOR_EVENING_HISTORY'
 }
 
 export enum BottomBarRouterPaths {

@@ -3,29 +3,38 @@ import { NavigationModel } from '../../../router/types';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { ForEveningGenres } from './components/ForEveningGenres';
 import { Genre } from '../../../common/store/model';
-import { Button } from 'react-native-paper';
+import { Button, Caption } from 'react-native-paper';
 import { ForEveningSearchRequest } from '../store/models';
 import { useActions } from '../../../common/actionFactory/useActions';
 import { useAppSelector } from '../../../store/hooks';
-import { isEmpty, random } from 'lodash';
+import { isEmpty, random, findLastIndex } from 'lodash';
 import { useNavigation } from '@react-navigation/native';
 import { RouterPaths } from '../../../router/routerPaths';
 import { IMovieShortInfo } from '../../MoviesList/store/models';
 import { LoadingSpinner } from '../../../common/components/Spinner/LoadingSpinner';
 import { ForEveningYearInput } from './components/ForEveningYearInput';
+import { isFulfilled } from '../../../common/statusCheckers/asyncStatusCheckers';
+import { ForEveningUtils } from '../utils/ForEveningUtils';
 
 /** Модель свойств компонента. */
 interface IOwnProps extends NavigationModel {}
 
 /** Компонент "Фильм на вечер". */
 export const ForEvening: React.FC<IOwnProps> = () => {
-    const { getMovies } = useActions(actions => actions.forEvening);
+    const { getMovies, getHistory, setMovieToHistory } = useActions(actions => actions.forEvening);
     const { movies, status } = useAppSelector(state => state.forEvening);
-
+    const utils = new ForEveningUtils();
     const navigation = useNavigation();
+
+    /** Локальное состояние. */
     const [genres, setGenres] = useState<Genre[]>([]);
     const [year, setYear] = useState<string>('');
+    const [inputError, setInputError] = useState<boolean>(false);
     const [randomMovie, setRandomMovie] = useState<IMovieShortInfo>();
+
+    useEffect(() => {
+        getHistory();
+    }, []);
 
     useEffect(() => {
         getRandomMovie();
@@ -38,18 +47,17 @@ export const ForEvening: React.FC<IOwnProps> = () => {
     }, [randomMovie]);
 
     async function handleSearch() {
-        const request: ForEveningSearchRequest = {
-            genres: genres.map(genre => genre.id).toString(),
-            year: parseInt(year),
-        };
+        const request: ForEveningSearchRequest = utils.getRequest(genres, year);
         await getMovies(request);
     }
 
-    function getRandomMovie() {
+    async function getRandomMovie() {
         if (movies && movies.results && !isEmpty(movies.results)) {
-            const randomIndex = random(0, movies.results.length - 1);
+            const randomIndex = random(0, findLastIndex(movies.results));
             const randomMovie = movies.results[randomIndex];
+
             setRandomMovie(randomMovie);
+            await setMovieToHistory(randomMovie);
         }
     }
 
@@ -60,17 +68,28 @@ export const ForEvening: React.FC<IOwnProps> = () => {
         });
     }
 
+    const handleSetInputError = (state: boolean) => setInputError(state);
+    const isButtonDisabled = (isEmpty(genres) && isEmpty(year)) || inputError;
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.content}>
                 <View>
                     <ForEveningGenres selectedGenres={genres} setSelectedGenres={setGenres} />
-                    <ForEveningYearInput value={year} setValue={setYear} />
-                    <Button mode={'contained'} onPress={handleSearch} icon='arrow-right-thick'>
+                    <ForEveningYearInput setError={handleSetInputError} value={year} setValue={setYear} utils={utils} />
+                    <Button
+                        disabled={isButtonDisabled}
+                        mode={'contained'}
+                        onPress={handleSearch}
+                        icon='arrow-right-thick'
+                    >
                         Найти фильм на вечер
                     </Button>
                 </View>
                 <LoadingSpinner status={status} />
+                {isFulfilled(status) && isEmpty(movies?.results) && (
+                    <Caption style={styles.notFoundText}>По заданным критериям не найдено результатов.</Caption>
+                )}
             </View>
         </ScrollView>
     );
@@ -84,5 +103,9 @@ const styles = StyleSheet.create({
     content: {
         marginHorizontal: 16,
         marginVertical: 8,
+    },
+    notFoundText: {
+        textAlign: 'center',
+        paddingTop: 16,
     },
 });
