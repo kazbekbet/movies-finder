@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { NavigationModel } from '../../../router/types';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { ForEveningGenres } from './components/ForEveningGenres';
 import { Genre } from '../../../common/store/model';
 import { Button, Caption } from 'react-native-paper';
 import { ForEveningSearchRequest } from '../store/models';
-import { useActions } from '../../../common/actionFactory/useActions';
 import { useAppSelector } from '../../../store/hooks';
-import { isEmpty, random, findLastIndex } from 'lodash';
+import { findLastIndex, isEmpty, random } from 'lodash';
 import { useNavigation } from '@react-navigation/native';
 import { RouterPaths } from '../../../router/routerPaths';
 import { IMovieShortInfo } from '../../MoviesList/store/models';
@@ -15,16 +14,21 @@ import { LoadingSpinner } from '../../../common/components/Spinner/LoadingSpinne
 import { ForEveningYearInput } from './components/ForEveningYearInput';
 import { isFulfilled } from '../../../common/statusCheckers/asyncStatusCheckers';
 import { ForEveningUtils } from '../utils/ForEveningUtils';
+import { ActionsContext } from '../../../common/components/CommonEffectWrapper/CommonEffectWrapper';
+import { ActionsFactory } from '../../../common/actionFactory/actionFactory';
 
 /** Модель свойств компонента. */
 interface IOwnProps extends NavigationModel {}
 
 /** Компонент "Фильм на вечер". */
 export const ForEvening: React.FC<IOwnProps> = () => {
-    const { getMovies, getHistory, setMovieToHistory } = useActions(actions => actions.forEvening);
     const { movies, status } = useAppSelector(state => state.forEvening);
     const utils = new ForEveningUtils();
     const navigation = useNavigation();
+
+    /** Экшены компонента. */
+    const { forEveningActions } = useContext(ActionsContext) as ActionsFactory;
+    const { getMovies, getHistory, setMovieToHistory } = forEveningActions;
 
     /** Локальное состояние. */
     const [genres, setGenres] = useState<Genre[]>([]);

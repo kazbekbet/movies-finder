@@ -1,8 +1,7 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useContext, useEffect, useLayoutEffect } from 'react';
 import { NavigationModel } from '../../../router/types';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { MovieInfoAppBarHeader } from './components/MovieInfoAppBarHeader';
-import { useActions } from '../../../common/actionFactory/useActions';
 import { isPending } from '../../../common/statusCheckers/asyncStatusCheckers';
 import { useAppSelector } from '../../../store/hooks';
 import { Caption, Card, Chip, Divider, Paragraph, Title } from 'react-native-paper';
@@ -13,6 +12,8 @@ import { LoadingSpinner } from '../../../common/components/Spinner/LoadingSpinne
 import { FetchedDataChecker } from '../../../common/statusCheckers/FetchedDataChecker';
 import { MovieInfoUtils } from '../utils/MovieInfoUtils';
 import { MovieInfoTable } from './components/MovieInfoTable';
+import { ActionsContext } from '../../../common/components/CommonEffectWrapper/CommonEffectWrapper';
+import { ActionsFactory } from '../../../common/actionFactory/actionFactory';
 
 /** Модель свойств компонента. */
 interface IOwnProps extends NavigationModel {}
@@ -20,8 +21,10 @@ interface IOwnProps extends NavigationModel {}
 /** Компонент детальной информации о фильме. */
 export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
     const { result, status } = useAppSelector(state => state.movieInfo);
-    const actions = useActions(actions => actions.movieInfo);
     const utils = new MovieInfoUtils();
+
+    /** Экшены компонента. */
+    const { movieInfoActions } = useContext(ActionsContext) as ActionsFactory;
 
     /** Специальные опции для AppBar. */
     useLayoutEffect(() => {
@@ -34,11 +37,11 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
     /** Действия при маунте компонента. */
     useEffect(() => {
         if (route.params?.id) {
-            actions.getMovieInfo(route.params.id);
-            actions.getMovieTrailer(route.params.id);
+            movieInfoActions.getMovieInfo(route.params.id);
+            movieInfoActions.getMovieTrailer(route.params.id);
         }
 
-        return () => actions.clearMovieInfoData();
+        return () => movieInfoActions.clearMovieInfoData();
     }, []);
 
     /** Путь постера. */
@@ -99,6 +102,6 @@ const styles = StyleSheet.create({
     },
     chip: {
         marginRight: 8,
-        marginVertical: 4
+        marginVertical: 4,
     },
 });

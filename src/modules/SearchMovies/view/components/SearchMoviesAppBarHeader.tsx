@@ -1,28 +1,31 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Searchbar } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import { useAppSelector } from '../../../../store/hooks';
-import { useActions } from '../../../../common/actionFactory/useActions';
-import { SearchMoviesActions } from '../../actions/actions';
+import { ActionsContext } from '../../../../common/components/CommonEffectWrapper/CommonEffectWrapper';
+import { ActionsFactory } from '../../../../common/actionFactory/actionFactory';
 
 /** Компонент AppBar поиска фильмов. */
 export const SearchMoviesAppBarHeader: React.FC = () => {
     const { query, page } = useAppSelector(state => state.searchMovies);
-    const actions = useActions(actions => actions.searchMovies) as SearchMoviesActions;
+
+    /** Экшены компонента. */
+    const { searchMoviesActions } = useContext(ActionsContext) as ActionsFactory;
+    const { setQueryValue, clearData, submitQueryValue } = searchMoviesActions;
 
     function handleChangeText(query: string) {
-        actions.setQueryValue(query);
-        if (query.length === 0) actions.clearData();
+        setQueryValue(query);
+        if (query.length === 0) clearData();
     }
 
     function handleSubmit() {
         if (query.length !== 0) {
-            actions.submitQueryValue(query, page);
+            submitQueryValue(query, page);
         }
     }
 
     function handleCancel() {
-        actions.clearData();
+        clearData();
     }
 
     return (

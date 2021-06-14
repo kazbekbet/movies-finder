@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useAppSelector } from '../../../store/hooks';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { isFulfilled, isIdle, isPending } from '../../../common/statusCheckers/asyncStatusCheckers';
@@ -8,12 +8,12 @@ import { RouterPaths } from '../../../router/routerPaths';
 import { NavigationModel } from '../../../router/types';
 import { Caption } from 'react-native-paper';
 import { isEmpty } from 'lodash';
-import { useActions } from '../../../common/actionFactory/useActions';
 import { LoadingSpinner } from '../../../common/components/Spinner/LoadingSpinner';
+import { ActionsContext } from '../../../common/components/CommonEffectWrapper/CommonEffectWrapper';
+import { ActionsFactory } from '../../../common/actionFactory/actionFactory';
 
 /** Модель свойств компонента. */
-interface IOwnProps extends NavigationModel {
-}
+interface IOwnProps extends NavigationModel {}
 
 /**
  * Компонент поиска фильмов.
@@ -22,7 +22,10 @@ export const SearchMovies: React.FC<IOwnProps> = React.memo(({ navigation }) => 
     const { query, lastQueryValue, status, movies, page, newPageLoadStatus } = useAppSelector(
         state => state.searchMovies
     );
-    const { changePage, loadNewPageData } = useActions(actions => actions.searchMovies);
+
+    /** Экшены компонента. */
+    const { searchMoviesActions } = useContext(ActionsContext) as ActionsFactory;
+    const { changePage, loadNewPageData } = searchMoviesActions;
 
     useEffect(() => {
         if (query) loadNewPageData(query, page);
@@ -32,7 +35,7 @@ export const SearchMovies: React.FC<IOwnProps> = React.memo(({ navigation }) => 
     const handlePress = ({ id, title }: { id: number; title: string }) => () => {
         navigation.navigate(RouterPaths.MOVIE_INFO, {
             id,
-            title
+            title,
         });
     };
 
@@ -90,11 +93,11 @@ export const SearchMovies: React.FC<IOwnProps> = React.memo(({ navigation }) => 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#efefef',
-        flex: 1
+        flex: 1,
     },
     textContent: {
         textAlign: 'center',
-        paddingTop: 16
+        paddingTop: 16,
     },
     results: {
         paddingVertical: 16,
@@ -102,6 +105,6 @@ const styles = StyleSheet.create({
         elevation: 8,
         backgroundColor: '#fff',
         justifyContent: 'space-between',
-        flexDirection: 'row'
-    }
+        flexDirection: 'row',
+    },
 });

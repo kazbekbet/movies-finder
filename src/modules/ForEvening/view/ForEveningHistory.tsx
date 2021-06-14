@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useContext, useLayoutEffect } from 'react';
 import { useAppSelector } from '../../../store/hooks';
 import { NavigationModel } from '../../../router/types';
 import { AppBarHeader } from '../../../common/components/AppBar/AppBarHeader';
@@ -9,7 +9,8 @@ import { IconButton, Paragraph } from 'react-native-paper';
 import { isEmpty } from 'lodash';
 import { MovieCard } from '../../../common/components/MovieCard/MovieCard';
 import { RouterPaths } from '../../../router/routerPaths';
-import { useActions } from '../../../common/actionFactory/useActions';
+import { ActionsContext } from '../../../common/components/CommonEffectWrapper/CommonEffectWrapper';
+import { ActionsFactory } from '../../../common/actionFactory/actionFactory';
 
 /** Модель свойств компонента. */
 interface IOwnProps extends NavigationModel {}
@@ -17,15 +18,16 @@ interface IOwnProps extends NavigationModel {}
 /** Компонент списка сохраненных фильмов из "Фильм на вечер". */
 export const ForEveningHistory: React.FC<IOwnProps> = ({ navigation }) => {
     const { historyStatus, history } = useAppSelector(state => state.forEvening);
-    const actions = useActions(actions => actions.forEvening);
+
+    /** Экшены компонента. */
+    const { forEveningActions } = useContext(ActionsContext) as ActionsFactory;
+    const { clearHistory } = forEveningActions;
 
     /** Специальные опции для AppBar. */
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => <AppBarHeader title='История поиска' />,
-            headerRight: () => (
-                <IconButton icon='trash-can-outline' color={'#fff'} size={24} onPress={actions.clearHistory} />
-            ),
+            headerRight: () => <IconButton icon='trash-can-outline' color={'#fff'} size={24} onPress={clearHistory} />,
         });
     }, [navigation]);
 

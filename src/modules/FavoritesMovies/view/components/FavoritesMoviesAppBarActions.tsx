@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { IconButton } from 'react-native-paper';
-import { useActions } from '../../../../common/actionFactory/useActions';
-import { FavoritesMoviesActions } from '../../actions/FavoritesMoviesActions';
 import { SimpleDialog } from '../../../../common/components/Dialogs/SimpleDialog';
 import { useAppSelector } from '../../../../store/hooks';
 import { ToastAndroid } from 'react-native';
-import { isEmpty, isNull } from "lodash";
+import { isEmpty, isNull } from 'lodash';
+import { ActionsContext } from '../../../../common/components/CommonEffectWrapper/CommonEffectWrapper';
+import { ActionsFactory } from '../../../../common/actionFactory/actionFactory';
 
 /** Кнопки бара избранных фильмов. */
 export const FavoritesMoviesAppBarActions: React.FC = () => {
-    const actions = useActions(actions => actions.favoritesMovies) as FavoritesMoviesActions;
+    const { favoritesMoviesActions } = useContext(ActionsContext) as ActionsFactory;
     const { movies } = useAppSelector(state => state.favoritesMovies);
     const [showDialog, setShowDialog] = useState(false);
 
@@ -18,8 +18,8 @@ export const FavoritesMoviesAppBarActions: React.FC = () => {
 
     const handlePress = async () => {
         await handleCloseDialog();
-        await actions.deleteAllData();
-        await actions.getFavoritesMovies();
+        await favoritesMoviesActions.deleteAllData();
+        await favoritesMoviesActions.getFavoritesMovies();
         await ToastAndroid.show('Список избранных очищен', ToastAndroid.SHORT);
     };
 

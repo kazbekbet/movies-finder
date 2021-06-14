@@ -9,7 +9,7 @@ interface IOwnProps {
 export const AppBarHeader: React.FC<IOwnProps> = ({ title, subtitle }) => {
     return (
         <>
-            <Text style={styles.title}>{title}</Text>
+            <Text numberOfLines={1} style={styles.title}>{title}</Text>
             {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
         </>
     );

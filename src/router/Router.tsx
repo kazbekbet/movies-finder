@@ -2,9 +2,6 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { themeConfig } from '../common/theme/themeConfig';
-import { RouterPaths } from './routerPaths';
-import { MovieInfo } from '../modules/MovieInfo/view/MovieInfo';
-import { MainTabRoutes } from './MainTabRoutes';
 import { stackScreensList } from './routerConfig';
 
 const Stack = createStackNavigator();

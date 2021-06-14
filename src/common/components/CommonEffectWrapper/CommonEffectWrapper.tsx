@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { createContext, useEffect } from 'react';
 import { useActions } from '../../actionFactory/useActions';
 
 /** Свойства компонента. */
@@ -6,14 +6,17 @@ interface IOwnProps {
     children: React.ReactNode;
 }
 
+export const ActionsContext = createContext({});
+
 /** Враппер общих экшенов. */
 export const CommonEffectWrapper: React.FC<IOwnProps> = ({ children }) => {
-    const actions = useActions(actions => actions.common);
+    const appActions = useActions(actions => actions);
+    const { commonActions } = appActions;
 
     useEffect(() => {
-        actions.getUSDCurrencyRate();
-        actions.getGenres();
+        commonActions.getUSDCurrencyRate();
+        commonActions.getGenres();
     }, []);
 
-    return <>{children}</>;
+    return <ActionsContext.Provider value={appActions}>{children}</ActionsContext.Provider>;
 };

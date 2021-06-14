@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { NavigationModel } from '../../../router/types';
-import { useActions } from '../../../common/actionFactory/useActions';
 import { useAppSelector } from '../../../store/hooks';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { MovieCard } from '../../../common/components/MovieCard/MovieCard';
@@ -9,25 +8,26 @@ import { Spinner } from '../../../common/components/Spinner/Spinner';
 import { Paragraph } from 'react-native-paper';
 import { isEmpty, isNull } from 'lodash';
 import { RouterPaths } from '../../../router/routerPaths';
+import { ActionsContext } from '../../../common/components/CommonEffectWrapper/CommonEffectWrapper';
+import { ActionsFactory } from '../../../common/actionFactory/actionFactory';
 
 /** Модель свойств компонента. */
-interface IOwnProps extends NavigationModel {
-}
+interface IOwnProps extends NavigationModel {}
 
 /** Компонент списка избранных фильмов. */
 export const FavoritesMovies: React.FC<IOwnProps> = ({ navigation }) => {
     const { status, movies } = useAppSelector(state => state.favoritesMovies);
-    const actions = useActions(actions => actions.favoritesMovies);
+    const { favoritesMoviesActions } = useContext(ActionsContext) as ActionsFactory;
 
     useEffect(() => {
-        actions.getFavoritesMovies();
+        favoritesMoviesActions.getFavoritesMovies();
     }, []);
 
     /** Переход к детальной информации о фильме. */
     const handlePress = ({ id, title }: { id: number; title: string }) => () => {
         navigation.navigate(RouterPaths.MOVIE_INFO, {
             id,
-            title
+            title,
         });
     };
 
@@ -66,10 +66,10 @@ export const FavoritesMovies: React.FC<IOwnProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#efefef',
-        flex: 1
+        flex: 1,
     },
     textContent: {
         textAlign: 'center',
-        paddingTop: 16
-    }
+        paddingTop: 16,
+    },
 });

@@ -8,7 +8,6 @@ interface IOwnProps {
 export const MovieInfoAppBarHeader: React.FC<IOwnProps> = ({ title }) => {
     const getTitle = () => {
         if (!title) return 'Без названия';
-        if (title && title.length > 16) return `${title.slice(0, 16)}...`;
         return title;
     };
 

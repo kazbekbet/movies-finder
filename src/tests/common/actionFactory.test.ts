@@ -12,27 +12,27 @@ describe('Action Factory test', () => {
     const actions = new ActionsFactory(dispatch);
 
     test('Should return true if object is instance of common actions', () => {
-        const common = actions.common;
+        const common = actions.commonActions;
         expect(common instanceof CommonActions).toBeTruthy();
     });
 
     test('Should return true if object is instance of moviesList actions', () => {
-        const moviesList = actions.moviesList;
+        const moviesList = actions.moviesListActions;
         expect(moviesList instanceof MovieListActions).toBeTruthy();
     });
 
     test('Should return true if object is instance of movieInfo actions', () => {
-        const movieInfo = actions.movieInfo;
+        const movieInfo = actions.movieInfoActions;
         expect(movieInfo instanceof MovieInfoActions).toBeTruthy();
     });
 
     test('Should return true if object is instance of favoritesMovies actions', () => {
-        const favoritesMovies = actions.favoritesMovies;
+        const favoritesMovies = actions.favoritesMoviesActions;
         expect(favoritesMovies instanceof FavoritesMoviesActions).toBeTruthy();
     });
 
     test('Should return true if object is instance of searchMovies actions', () => {
-        const searchMovies = actions.searchMovies;
+        const searchMovies = actions.searchMoviesActions;
         expect(searchMovies instanceof SearchMoviesActions).toBeTruthy();
     });
 });

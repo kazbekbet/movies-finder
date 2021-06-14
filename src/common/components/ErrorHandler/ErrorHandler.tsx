@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useAppSelector } from '../../../store/hooks';
 import { SimpleDialog } from '../Dialogs/SimpleDialog';
-import { useActions } from '../../actionFactory/useActions';
-import { CommonActions } from '../../store/actions';
+import { ActionsContext } from '../CommonEffectWrapper/CommonEffectWrapper';
+import { ActionsFactory } from '../../actionFactory/actionFactory';
 
 /** Свойства компонента. */
 interface IOwnProps {
@@ -12,7 +12,7 @@ interface IOwnProps {
 /** Компонент обработки ошибок. */
 export const ErrorHandler: React.FC<IOwnProps> = ({ children }) => {
     const { isError, errorText } = useAppSelector(state => state.common);
-    const actions = useActions(actions => actions.common) as CommonActions;
+    const { commonActions } = useContext(ActionsContext) as ActionsFactory;
 
     return (
         <>
@@ -20,8 +20,8 @@ export const ErrorHandler: React.FC<IOwnProps> = ({ children }) => {
                 isVisible={isError}
                 title={'Ошибка'}
                 description={errorText}
-                onConfirm={actions.clearError}
-                onDismiss={actions.clearError}
+                onConfirm={commonActions.clearError}
+                onDismiss={commonActions.clearError}
             />
 
             {children}

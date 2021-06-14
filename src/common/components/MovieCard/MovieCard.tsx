@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
 import { Card, Chip, Paragraph, Title } from 'react-native-paper';
 import { textColorsConfig } from '../../theme/themeConfig';
 import { RippleEffect } from '../Ripple/RippleEffect';
 import { ApiConfig } from '../../api/config';
 import { SimpleDialog } from '../Dialogs/SimpleDialog';
-import { useActions } from '../../actionFactory/useActions';
-import { MovieInfoActions } from '../../../modules/MovieInfo/actions/actions';
 import { IMovieShortInfo } from '../../../modules/MoviesList/store/models';
-import { FavoritesMoviesActions } from '../../../modules/FavoritesMovies/actions/FavoritesMoviesActions';
 import { useAppSelector } from '../../../store/hooks';
 import { PromiseStatuses } from '../../enums/asyncActionStatuses';
 import { getMovieReleaseYear } from '../../utils/commonUtils';
+import { ActionsContext } from '../CommonEffectWrapper/CommonEffectWrapper';
+import { ActionsFactory } from '../../actionFactory/actionFactory';
 
 /**
  * Модель пропсов для компонента карточки фильма.
@@ -42,8 +41,7 @@ export const MovieCard: React.FC<IOwnProps> = props => {
     const [isFavourite, setFavourite] = useState(false);
 
     /** Экшены. */
-    const actions = useActions(actions => actions.movieInfo) as MovieInfoActions;
-    const favoritesActions = useActions(actions => actions.favoritesMovies) as FavoritesMoviesActions;
+    const { movieInfoActions, favoritesMoviesActions } = useContext(ActionsContext) as ActionsFactory;
 
     /** Эффект при маунте компонента. */
     useEffect(() => {
@@ -64,17 +62,17 @@ export const MovieCard: React.FC<IOwnProps> = props => {
     /** Обработчик добавления фильма в избранное. */
     async function handleAddToFavorites() {
         await closeDialog();
-        await actions.setMovieToLocalStorage(shortMovieInfo);
+        await movieInfoActions.setMovieToLocalStorage(shortMovieInfo);
         await ToastAndroid.show('Фильм успешно добавлен в избранные', ToastAndroid.SHORT);
-        await favoritesActions.getFavoritesMovies();
+        await favoritesMoviesActions.getFavoritesMovies();
     }
 
     /** Обработчик удаления фильма из избранного. */
     async function handleRemoveFromFavourites() {
         await closeDialog();
-        await actions.removeMovieFromLocalStorageById(id);
+        await movieInfoActions.removeMovieFromLocalStorageById(id);
         await ToastAndroid.show('Фильм успешно удален из избранного', ToastAndroid.SHORT);
-        await favoritesActions.getFavoritesMovies();
+        await favoritesMoviesActions.getFavoritesMovies();
     }
 
     /** Обработчик открытия диалога. */
@@ -99,14 +97,7 @@ export const MovieCard: React.FC<IOwnProps> = props => {
     const isMovieShown = (title && description) || (posterPath && title);
     const moviePoster = `${ApiConfig.POSTER_URL}${posterPath}`;
     const movieVoteAverage = voteAverage ? voteAverage : 'неизвестно';
-
-    function setDescription() {
-        if (description) {
-            if (description.length <= 140) return description;
-            return `${description.slice(0, 120)}...`;
-        }
-        return 'Без описания';
-    }
+    const movieDescription = description ? description : 'Без описания';
 
     return isMovieShown ? (
         <>
@@ -122,7 +113,9 @@ export const MovieCard: React.FC<IOwnProps> = props => {
                                     Год: {getMovieReleaseYear(releaseDate)}
                                 </Paragraph>
                             </View>
-                            <Paragraph style={styles.textDescription}>{setDescription()}</Paragraph>
+                            <Paragraph numberOfLines={4} style={styles.textDescription}>
+                                {movieDescription}
+                            </Paragraph>
                             {isFavourite && (
                                 <View style={styles.favouriteChip}>
                                     <Chip icon={'heart'}>В избранном</Chip>

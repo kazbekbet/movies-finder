@@ -11,11 +11,11 @@ export default function App() {
     return (
         <Provider store={globalStore}>
             <PaperProvider theme={themeConfig}>
-                <ErrorHandler>
-                    <CommonEffectWrapper>
+                <CommonEffectWrapper>
+                    <ErrorHandler>
                         <Router />
-                    </CommonEffectWrapper>
-                </ErrorHandler>
+                    </ErrorHandler>
+                </CommonEffectWrapper>
             </PaperProvider>
         </Provider>
     );
