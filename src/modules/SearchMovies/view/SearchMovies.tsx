@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { useAppSelector } from '../../../store/hooks';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { isFulfilled, isIdle, isPending } from '../../../common/statusCheckers/asyncStatusCheckers';
@@ -32,12 +32,14 @@ export const SearchMovies: React.FC<IOwnProps> = React.memo(({ navigation }) => 
     }, [page]);
 
     /** Переход к детальной информации о фильме. */
-    const handlePress = ({ id, title }: { id: number; title: string }) => () => {
+    const handleNavigate = ({ id, title }: { id: number; title: string }) => () => {
         navigation.navigate(RouterPaths.MOVIE_INFO, {
             id,
             title,
         });
     };
+
+    const handlePress = useCallback(handleNavigate, []);
 
     /** Обработчик изменения страницы. */
     const handleChangePage = () => {

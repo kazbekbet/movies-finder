@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { IMovieListResponse } from '../../store/models';
 import { PromiseStatuses } from '../../../../common/enums/asyncActionStatuses';
 import { MovieCard } from '../../../../common/components/MovieCard/MovieCard';
@@ -13,12 +13,14 @@ interface IOwnProps {
 export const MovieListContent: React.FC<IOwnProps> = ({ movies, status }) => {
     const navigation = useNavigation();
     /** Переход к детальной информации о фильме. */
-    const handlePress = ({ id, title }: { id: number; title: string }) => () => {
+    const handleNavigate = ({ id, title }: { id: number; title: string }) => () => {
         navigation.navigate(RouterPaths.MOVIE_INFO, {
             id,
             title,
         });
     };
+
+    const handlePress = useCallback(handleNavigate, []);
 
     return (
         <>
