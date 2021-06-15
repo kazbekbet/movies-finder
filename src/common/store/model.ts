@@ -1,15 +1,16 @@
 import { RouterPaths } from '../../router/routerPaths';
 import { CurrencyTypes } from '../enums/currency';
 import { PromiseStatuses } from '../enums/asyncActionStatuses';
+import { Nullable } from '../models/additional';
 
 export interface CommonReducer {
     isError: boolean;
     errorText: string;
-    currentRoute: RouterPaths | null;
+    currentRoute: Nullable<RouterPaths>;
     currencyStatus: PromiseStatuses;
-    currencyResult: CurrencyModel | null;
-    genresStatus: PromiseStatuses,
-    genres: Genre[] | null;
+    currencyResult: Nullable<CurrencyModel>;
+    genresStatus: PromiseStatuses;
+    genres: Nullable<Genre[]>;
 }
 
 export interface CurrencyModel {

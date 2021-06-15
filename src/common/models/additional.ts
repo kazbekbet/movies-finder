@@ -9,3 +9,5 @@ export interface IMovieInfoTable {
     label: string;
     value: string | number;
 }
+
+export type Nullable<T> = T | null;

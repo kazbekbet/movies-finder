@@ -9,8 +9,7 @@ import { SearchMoviesActions } from '../../modules/SearchMovies/actions/actions'
 import { SearchMoviesServices } from '../../modules/SearchMovies/services/services';
 import { ForEveningServices } from '../../modules/ForEvening/services/services';
 import { ForEveningActions } from '../../modules/ForEvening/actions/actions';
-
-type Nullable<T> = T | null;
+import { Nullable } from '../models/additional';
 
 /** Фабрика экшенов. */
 export class ActionsFactory {

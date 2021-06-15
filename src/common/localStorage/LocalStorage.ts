@@ -78,3 +78,6 @@ export class LocalStorage {
         await AsyncStorage.removeItem(key);
     };
 }
+
+/** Инстанс класса для оптимизации. */
+export const localStorageUtils = new LocalStorage();

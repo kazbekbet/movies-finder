@@ -3,14 +3,14 @@ import { ForEveningServices } from '../services/services';
 import { ForEveningSearchRequest } from '../store/models';
 import * as actions from '../store/reducer';
 import { CommonActions } from '../../../common/store/actions';
-import { LocalStorage } from '../../../common/localStorage/LocalStorage';
+import { localStorageUtils } from '../../../common/localStorage/LocalStorage';
 import { ELocalStorage } from '../../../common/enums/localStorage';
 import { IMovieShortInfo } from '../../MoviesList/store/models';
 
 export class ForEveningActions {
     constructor(private readonly services: ForEveningServices, private readonly dispatch: AppDispatch) {}
 
-    private localStorage = new LocalStorage();
+    private localStorage = localStorageUtils;
     private commonActions = new CommonActions(this.dispatch);
 
     /** Получение списка фильмов согласно фильтру. */

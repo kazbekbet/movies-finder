@@ -8,22 +8,20 @@ import {
     getMovieInfoRejected,
     getMovieTrailerFulfilled,
     getMovieTrailerPending,
-    getMovieTrailerRejected
+    getMovieTrailerRejected,
 } from '../store/reducer';
 import { IMovieInfoResult } from '../store/models';
 import { ELocalStorage } from '../../../common/enums/localStorage';
 import { ErrorsLocalization } from '../../../common/enums/errorsLocalization';
-import { MovieInfoUtils } from '../utils/MovieInfoUtils';
 import { IMovieShortInfo } from '../../MoviesList/store/models';
-import { LocalStorage } from '../../../common/localStorage/LocalStorage';
+import { localStorageUtils } from '../../../common/localStorage/LocalStorage';
 
+/** Экшены компонента информации о фильме. */
 export class MovieInfoActions {
-    constructor(private readonly services: MovieInfoServices, private readonly dispatch: AppDispatch) {
-    }
+    constructor(private readonly services: MovieInfoServices, private readonly dispatch: AppDispatch) {}
 
     private commonActions = new CommonActions(this.dispatch);
-    private localStorage = new LocalStorage();
-    private utils = new MovieInfoUtils();
+    private localStorage = localStorageUtils;
 
     /** Получение информации о фильме. */
     public getMovieInfo = async (id: number) => {

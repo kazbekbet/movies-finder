@@ -1,13 +1,8 @@
 import { Genre } from '../../../common/store/model';
 import { isEmpty, random } from 'lodash';
-import { IMovieShortInfo } from '../../MoviesList/store/models';
-import { LocalStorage } from '../../../common/localStorage/LocalStorage';
-import { ELocalStorage } from '../../../common/enums/localStorage';
 
 /** Вспомогательный класс для компонента "Фильм на вечер". */
 export class ForEveningUtils {
-    localStorage = new LocalStorage();
-
     /** Возвращает объект с максимальным разбегом годов релиза. */
     getYearRange = (): { max: number; min: number } => {
         return {

@@ -1,24 +1,25 @@
 import { PromiseStatuses } from '../../../common/enums/asyncActionStatuses';
 import { IMovieShortInfo } from '../../MoviesList/store/models';
+import { Nullable } from "../../../common/models/additional";
 
 export interface IMovieInfoModule {
     status: PromiseStatuses;
-    result: IMovieInfoResult | null;
-    trailer: IMovieTrailerInfo | null;
+    result: Nullable<IMovieInfoResult>;
+    trailer: Nullable<IMovieTrailerInfo>;
     trailerStatus: PromiseStatuses;
 }
 
 export interface IMovieInfoResult extends IMovieShortInfo {
     poster_path: string;
-    production_companies: IProductionCompanies[] | null;
-    production_countries: IProductionCountries[] | null;
+    production_companies: Nullable<IProductionCompanies[]>;
+    production_countries: Nullable<IProductionCountries[]>;
     revenue: number;
     runtime: number;
     spoken_languages: ISpokenLanguages[];
     status: string;
     tagline: string;
     vote_count: number;
-    genres: IMovieGenres[] | null;
+    genres: Nullable<IMovieGenres[]>;
 }
 
 interface IProductionCompanies {
