@@ -1,6 +1,6 @@
 import { PromiseStatuses } from '../../../common/enums/asyncActionStatuses';
 import { IMovieShortInfo } from '../../MoviesList/store/models';
-import { Nullable } from "../../../common/models/additional";
+import { Nullable } from '../../../common/models/additional';
 
 export interface IMovieInfoModule {
     status: PromiseStatuses;
@@ -20,6 +20,8 @@ export interface IMovieInfoResult extends IMovieShortInfo {
     tagline: string;
     vote_count: number;
     genres: Nullable<IMovieGenres[]>;
+    homepage: Nullable<string>;
+    imdb_id: Nullable<string>;
 }
 
 interface IProductionCompanies {

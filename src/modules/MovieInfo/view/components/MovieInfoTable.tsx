@@ -1,10 +1,11 @@
 import React from 'react';
 import { IMovieInfoResult } from '../../store/models';
 import { StyleSheet, View } from 'react-native';
-import { Paragraph, Subheading } from 'react-native-paper';
+import { Paragraph } from 'react-native-paper';
 import { MovieInfoUtils } from '../../utils/MovieInfoUtils';
 import { textColorsConfig } from '../../../../common/theme/themeConfig';
 import { useAppSelector } from '../../../../store/hooks';
+import { ContentBlock } from '../../../../common/components/Content/ContentBlock';
 
 interface IOwnProps {
     movie: IMovieInfoResult;
@@ -17,34 +18,35 @@ export const MovieInfoTable: React.FC<IOwnProps> = ({ movie }) => {
     const tableInfo = getMovieInfoTableConfig(movie, currencyResult);
 
     return (
-        <View style={styles.container}>
-            <Subheading>Подробная информация</Subheading>
-            {tableInfo.map(item => (
-                <View key={item.label} style={styles.row}>
-                    <View style={styles.element}>
-                        <Paragraph style={styles.textLabel}>{item.label}</Paragraph>
+        <ContentBlock title={'Подробная информация'}>
+            <>
+                {tableInfo.map(item => (
+                    <View key={item.label} style={styles.row}>
+                        <View style={styles.element}>
+                            <Paragraph style={styles.textLabel}>{item.label}</Paragraph>
+                        </View>
+                        <View style={styles.value}>
+                            <Paragraph>{item.value}</Paragraph>
+                        </View>
                     </View>
-                    <View>
-                        <Paragraph>{item.value}</Paragraph>
-                    </View>
-                </View>
-            ))}
-        </View>
+                ))}
+            </>
+        </ContentBlock>
     );
 };
 
 const { PROPERTIES } = textColorsConfig.READ_CONTENT;
 
 const styles = StyleSheet.create({
-    container: {
-        paddingVertical: 8,
-    },
     row: {
         flexDirection: 'row',
         paddingVertical: 8,
     },
     element: {
         width: '40%',
+    },
+    value: {
+        width: '60%',
     },
     textLabel: {
         color: PROPERTIES,

@@ -1,4 +1,4 @@
-import React, { useContext, useLayoutEffect } from 'react';
+import React, { useContext, useLayoutEffect, useState } from 'react';
 import { useAppSelector } from '../../../store/hooks';
 import { NavigationModel } from '../../../router/types';
 import { AppBarHeader } from '../../../common/components/AppBar/AppBarHeader';
@@ -11,6 +11,7 @@ import { MovieCard } from '../../../common/components/MovieCard/MovieCard';
 import { RouterPaths } from '../../../router/routerPaths';
 import { ActionsContext } from '../../../common/components/CommonEffectWrapper/CommonEffectWrapper';
 import { ActionsFactory } from '../../../common/actionFactory/actionFactory';
+import { SimpleDialog } from '../../../common/components/Dialogs/SimpleDialog';
 
 /** Модель свойств компонента. */
 interface IOwnProps extends NavigationModel {}
@@ -18,6 +19,7 @@ interface IOwnProps extends NavigationModel {}
 /** Компонент списка сохраненных фильмов из "Фильм на вечер". */
 export const ForEveningHistory: React.FC<IOwnProps> = ({ navigation }) => {
     const { historyStatus, history } = useAppSelector(state => state.forEvening);
+    const [showConfirmDialog, setShowConfirmDialog] = useState<boolean>(false);
 
     /** Экшены компонента. */
     const { forEveningActions } = useContext(ActionsContext) as ActionsFactory;
@@ -27,7 +29,7 @@ export const ForEveningHistory: React.FC<IOwnProps> = ({ navigation }) => {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => <AppBarHeader title='История поиска' />,
-            headerRight: () => <IconButton icon='trash-can-outline' color={'#fff'} size={24} onPress={clearHistory} />,
+            headerRight: () => <IconButton icon='trash-can-outline' color={'#fff'} size={24} onPress={toggleDialog} />,
         });
     }, [navigation]);
 
@@ -38,6 +40,15 @@ export const ForEveningHistory: React.FC<IOwnProps> = ({ navigation }) => {
             title,
         });
     };
+
+    function toggleDialog() {
+        setShowConfirmDialog(prev => !prev);
+    }
+
+    async function clearSearchHistory() {
+        toggleDialog();
+        await clearHistory();
+    }
 
     return (
         <View style={styles.container}>
@@ -63,6 +74,15 @@ export const ForEveningHistory: React.FC<IOwnProps> = ({ navigation }) => {
                     )}
                 />
             )}
+            <SimpleDialog
+                isVisible={showConfirmDialog}
+                title={'Очистка истории'}
+                description={'Вы уверены, что желаете очистить историю поиска?'}
+                onConfirm={clearSearchHistory}
+                confirmText={'Подтвердить'}
+                onDismiss={toggleDialog}
+                cancelText={'Отмена'}
+            />
         </View>
     );
 };
