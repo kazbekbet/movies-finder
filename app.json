@@ -30,5 +30,17 @@
       "favicon": "./assets/icon.png"
     },
     "description": "Приложение на React Native для поиска фильмов."
+  },
+  "hooks": {
+    "postPublish": [
+      {
+        "file": "sentry-expo/upload-sourcemaps",
+        "config": {
+          "organization": "Kazbek Beteev",
+          "project": "movies-finder",
+          "authToken": "33d0c320a7ea46e8b0df02a24ef179275fd923e1a05949c8a17fbe98866b5d61"
+        }
+      }
+    ]
   }
 }

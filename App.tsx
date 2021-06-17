@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Sentry from 'sentry-expo';
 import { Provider } from 'react-redux';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { themeConfig } from './src/common/theme/themeConfig';
@@ -20,3 +21,9 @@ export default function App() {
         </Provider>
     );
 }
+
+Sentry.init({
+  dsn: 'https://892e8d0638474f5382d75875319855f7@o860516.ingest.sentry.io/5821057',
+  enableInExpoDevelopment: true,
+  debug: true,
+});
