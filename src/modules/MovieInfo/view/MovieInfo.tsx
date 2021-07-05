@@ -15,6 +15,7 @@ import { MovieInfoTable } from './components/MovieInfoTable';
 import { ActionsContext } from '../../../common/components/CommonEffectWrapper/CommonEffectWrapper';
 import { ActionsFactory } from '../../../common/actionFactory/actionFactory';
 import { MovieInfoLinks } from './components/MovieInfoLinks';
+import { MovieInfoSimilarMovies } from './components/MovieInfoSimilarMovies';
 
 /** Модель свойств компонента. */
 interface IOwnProps extends NavigationModel {}
@@ -73,6 +74,8 @@ export const MovieInfo: React.FC<IOwnProps> = ({ route, navigation }) => {
                                 <Divider />
                                 <MovieInfoTable movie={result} />
                                 {/*<MovieInfoTrailer utils={utils} />*/}
+                                <Divider />
+                                <MovieInfoSimilarMovies id={result.id} />
                                 <Divider />
                                 <MovieInfoLinks />
                             </View>

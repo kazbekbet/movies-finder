@@ -9,6 +9,9 @@ import {
     getMovieTrailerFulfilled,
     getMovieTrailerPending,
     getMovieTrailerRejected,
+    getSimilarMoviesFulfilled,
+    getSimilarMoviesPending,
+    getSimilarMoviesRejected,
 } from '../store/reducer';
 import { IMovieInfoResult } from '../store/models';
 import { ELocalStorage } from '../../../common/enums/localStorage';
@@ -89,6 +92,17 @@ export class MovieInfoActions {
             this.dispatch(getMovieTrailerFulfilled(response.data));
         } catch (e) {
             this.dispatch(getMovieTrailerRejected());
+        }
+    };
+
+    /** Получение списка похожих фильмов. */
+    public getSimilarMovies = async (id: number) => {
+        try {
+            this.dispatch(getSimilarMoviesPending());
+            const response = await this.services.getSimilarMovies(id);
+            this.dispatch(getSimilarMoviesFulfilled(response.data));
+        } catch (e) {
+            this.dispatch(getSimilarMoviesRejected());
         }
     };
 }

@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IMovieInfoModule, IMovieInfoResult, IMovieTrailerInfo } from './models';
+import {
+    IMovieInfoModule,
+    IMovieInfoResult,
+    IMovieInfoSimilarResult,
+    IMovieTrailerInfo
+} from './models';
 import { PromiseStatuses } from '../../../common/enums/asyncActionStatuses';
 
 /** Начальное состояние. */
@@ -8,6 +13,8 @@ const initialState: IMovieInfoModule = {
     result: null,
     trailer: null,
     trailerStatus: PromiseStatuses.IDLE,
+    similarMoviesStatus: PromiseStatuses.IDLE,
+    similarMovies: null,
 };
 
 /** Редьюсер списка фильмов. */
@@ -39,6 +46,16 @@ export const movieInfoSlice = createSlice({
         getMovieTrailerRejected: state => {
             state.trailerStatus = PromiseStatuses.REJECTED;
         },
+        getSimilarMoviesPending: state => {
+            state.similarMoviesStatus = PromiseStatuses.PENDING;
+        },
+        getSimilarMoviesFulfilled: (state, action:PayloadAction<IMovieInfoSimilarResult>) => {
+            state.similarMoviesStatus = PromiseStatuses.FULFILLED;
+            state.similarMovies = action.payload
+        },
+        getSimilarMoviesRejected: state => {
+            state.similarMoviesStatus = PromiseStatuses.REJECTED;
+        }
     },
 });
 
@@ -49,5 +66,8 @@ export const {
     clearMovieInfoData,
     getMovieTrailerPending,
     getMovieTrailerFulfilled,
-    getMovieTrailerRejected
+    getMovieTrailerRejected,
+    getSimilarMoviesPending,
+    getSimilarMoviesFulfilled,
+    getSimilarMoviesRejected
 } = movieInfoSlice.actions;

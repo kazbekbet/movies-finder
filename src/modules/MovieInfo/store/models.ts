@@ -7,6 +7,8 @@ export interface IMovieInfoModule {
     result: Nullable<IMovieInfoResult>;
     trailer: Nullable<IMovieTrailerInfo>;
     trailerStatus: PromiseStatuses;
+    similarMoviesStatus: PromiseStatuses;
+    similarMovies: Nullable<IMovieInfoSimilarResult>;
 }
 
 export interface IMovieInfoResult extends IMovieShortInfo {
@@ -54,4 +56,11 @@ export interface IMovieTrailerInfo {
             site: string;
         }
     ];
+}
+
+export interface IMovieInfoSimilarResult {
+    page: number;
+    results: Nullable<IMovieShortInfo[]>;
+    total_pages: number;
+    total_results: number;
 }

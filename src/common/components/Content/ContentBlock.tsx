@@ -4,7 +4,7 @@ import { Paragraph } from 'react-native-paper';
 
 interface IOwnProps {
     title: string;
-    children: JSX.Element;
+    children?: JSX.Element;
     condition?: boolean;
 }
 
